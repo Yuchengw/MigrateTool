@@ -1,2 +1,6 @@
 <1> client Interface Design: 
 [1] Group as jar file
+[2] java -jar migrate ORG:OBJECT ORG:OBJECT(if OBject is not provided, default is the same one) -conf (if not present, ask user for mapping rule interatively. 
+[3]	ask for user's username and password to log into salesforce everytime people restart use migrate tool.
+[4] configuration file  is a XML file with user-defined mapping rule 
+[5]  
