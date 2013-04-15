@@ -1,0 +1,1 @@
+inorder to login: curl https://login.salesforce.com/services/Soap/u/27.0 -H "Content-Type: text/xml; charset=UTF-8" -H "SOAPAction: login" -d @login.txt
