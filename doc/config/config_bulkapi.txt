@@ -1,0 +1,3 @@
+use following command to generate partner.jar, set JAVA_HOME as jdk1.6.31_x64 jdk
+/home/yucheng.wang/work/dev/tools/Linux/jdk/jdk1.6.0_31_x64/bin/java -cp ./force-wsc-27.0.0.jar:./js-1.7R2.jar com.sforce.ws.tools.wsdlc ./partner.wsdl  ./partner.jar (use update-alternatives --install /usr/bin/java java /home/your/jdk/java/path)
+
