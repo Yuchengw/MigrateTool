@@ -2,8 +2,8 @@
  *  for migration tool.
  *
  * @author yucheng.wang@salesforce.com
- */
-
+ * @since 04/13/2013
+ */ 
 
 package com.salesforce.service.bulk;
 
@@ -17,17 +17,17 @@ import com.sforce.ws.ConnectionException;
 import com.sforce.ws.ConnectorConfig;
 
 
-public class SimpleBulkAPICaller{
+public class Insert{
 		
-	public SimpleBulkAPICaller(){
+	public Insert(){
 	}
 
 	/** 
 	 * function that creates a BULK API job and uploads batches for a CSV file, TODO: should also create a XML file version
 
-	 * @param: sobjectType, userName, user password,  target csv file name
-	 * @return: void
-     * @throws: AsyncApiException, ConnectionException, IOException
+	 * @param sobjectType, userName, user password,  target csv file name
+	 * @return void
+     * @throws AsyncApiException, ConnectionException, IOException
 	 *
      */	
 	public void runCSV(String sobjectType, String userName, String password, String csvFileName)
@@ -47,9 +47,9 @@ public class SimpleBulkAPICaller{
 	
 	/**
 	 * Create the BulkConnction used to call Bulk operations   
-     * @param:  user name, user password
-	 * @throws: ConnectionException, AsyncApiException
-     * @return: BulkConnection
+     * @param  user name, user password
+	 * @throws ConnectionException, AsyncApiException
+     * @return BulkConnection
      *
      */
 	public BulkConnection getBulkConnection(String username, String password) 
@@ -82,9 +82,9 @@ public class SimpleBulkAPICaller{
 
 	/**
      * Create a new job using Bulk API
-     * @param: sobject, bulkconnection,
-     * @return: JobInfo for the new job
-	 * @throws: AsyncApiException
+     * @param sobject, bulkconnection,
+     * @return JobInfo for the new job
+	 * @throws AsyncApiException
      *
      */
 	private JobInfo createJob(String sobjectType, BulkConnection connection)
@@ -102,10 +102,11 @@ public class SimpleBulkAPICaller{
 	/**
      * Create and upload batches using a CSV file
 	 * The file into the appropriate size batch files (1,000 to 10,000 is reasonable)
-	 * @param: connection to set up bulk connection
-	 * @param: jobInfo job associated with new batches
-     * @param: csvFileNamea The source CSV file for batch data
-     * @throws: IOException, AsyncApiException
+	 * @param connection to set up bulk connection
+	 * @param jobInfo job associated with new batches
+     * @param csvFileNamea The source CSV file for batch data
+	 * @return bacthInfos for the job
+     * @throws IOException, AsyncApiException
      */		
 	private List<BatchInfo> createBatchesFromCSVFile(BulkConnection connection, JobInfo jobInfo, 
 				String csvFileName) throws IOException, AsyncApiException{
@@ -124,8 +125,8 @@ public class SimpleBulkAPICaller{
 
 	/**
      * Split the batch records into small batches for better performance. 
-     * @param:  Buffered Original file, Temp File
-     * @return: void
+     * @param  Buffered Original file, Temp File
+     * @return void
 	 * 
      */
 	private void split(BufferedReader rdr, File tmpFile, byte[] headerBytes, 
@@ -173,19 +174,19 @@ public class SimpleBulkAPICaller{
 	/**
      * Create a batch by uploading file in the local machine, This close the output Stream
      *
-     * @param: tmpOut 
+     * @param tmpOut 
 	 *            The output stream used to write the file data for a single batch
-	 * @param: tmpFile
+	 * @param tmpFile
 	 *            The file associated with the above stream
-     * @param: batchInfos
+     * @param batchInfos
 	 *            The batch info for the newly created batch is added to this list
-	 * @param: connection
+	 * @param connection
 	 *            The BulkConnection used to create the new batch
-	 * @param: jobInfo
+	 * @param jobInfo
      *            The JobInfo associated with the new batch
      *
-     * @return: void
-	 * @throws: IOException, AynsApiException
+     * @return void
+	 * @throws IOException, AynsApiException
      */
 	private void createBatch(FileOutputStream tmpOut, File tmpFile, List<BatchInfo> batchInfos, 
 							 BulkConnection connection, JobInfo jobInfo) 
@@ -204,9 +205,9 @@ public class SimpleBulkAPICaller{
 
 	/**
      * After all batches have been added to job, close the job
-     * @param: Bulk Connection, JobId
-     * @return: void
-     * @throws: AsyncApiException
+     * @param Bulk Connection, JobId
+     * @return void
+     * @throws AsyncApiException
      *
      */
 	private void closeJob(BulkConnection connection, String jobId)
@@ -219,9 +220,9 @@ public class SimpleBulkAPICaller{
 
 	/**
      * A batch may take some time to complete depending on the size of the data set. 
-     * @param: BulkConnection, Job Information, BatchInfo List
-	 * @return: void
-	 * @throws: AsyncApiExcpetion
+     * @param BulkConnection, Job Information, BatchInfo List
+	 * @return void
+	 * @throws AsyncApiExcpetion
      *
      */
 	private void awaitCompletion(BulkConnection connection, JobInfo job, 
@@ -253,9 +254,9 @@ public class SimpleBulkAPICaller{
 		
 	/**
      * Get the resutls  of the operation and checks for errors
-     * @param: BulkConnection, JobInfo, List of BatchInfos
-     * @return: void
-     * @throws: AsyncApiException, IOException
+     * @param BulkConnection, JobInfo, List of BatchInfos
+     * @return void
+     * @throws AsyncApiException, IOException
      *
      */
 	private  void checkResults(BulkConnection connection, JobInfo job, List<BatchInfo> batchInfoList)
@@ -284,14 +285,14 @@ public class SimpleBulkAPICaller{
 		}
 	}
 
-	/**
-     * The main entry for whole sample file
-     */
-	public static void main(String[] args) throws AsyncApiException, 
-									ConnectionException, IOException{
-		SimpleBulkAPICaller example = new SimpleBulkAPICaller();
-		example.runCSV("Test__c","ycwmike@salesforce.com", "Ycw880216GWD6xhmXbW6aSedxaTZ8gtWuZ", "test.csv");	
-	}
+	///**
+    // * The main entry for whole sample file
+    // */
+	//public static void main(String[] args) throws AsyncApiException, 
+	//								ConnectionException, IOException{
+	//	SimpleBulkAPICaller example = new SimpleBulkAPICaller();
+	//	example.runCSV("Test__c","ycwmike@salesforce.com", "Ycw880216GWD6xhmXbW6aSedxaTZ8gtWuZ", "test.csv");	
+	//}
 } 
 
 
