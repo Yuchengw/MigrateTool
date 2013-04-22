@@ -3,7 +3,7 @@
 ARG_ERROR=65
 LIB_PATH=../../../../../lib/bulkapi/force-wsc-27.0.0.jar:../../../../../lib/bulkapi/partner.jar 
 CLASS_PATH=../../../../../classes/
-JAVA_PATH=/home/yucheng.wang/work/dev/tools/Linux/jdk/jdk1.6.0_31_x64/bin
+JAVA_PATH=javac
 
 if [ $# -ne 1 ]
 	then echo "./compilesh <java File Name>"
@@ -11,6 +11,6 @@ if [ $# -ne 1 ]
 fi
 
 {
-	$JAVA_PATH/javac -Xlint -cp $LIB_PATH -d $CLASS_PATH $1
+	$JAVA_PATH -Xlint -cp $LIB_PATH -d $CLASS_PATH $1
 } > /dev/null 1>&1
 

@@ -27,12 +27,14 @@ public class Runner{
 		try{
 			tool.startRun();
 		}catch(AsyncApiException t){
-			System.out.println(t);
+			t.printStackTrace();
 		}catch(ConnectionException e){
 			//TODO: will apply logger in the future
-			System.out.println(e);
-        }catch(IOException f){
+			e.printStackTrace();
+    }catch(IOException f){
 			System.out.println(f);
+		}catch(InterruptedException k){
+			System.out.println(k);
 		}
 	}
 

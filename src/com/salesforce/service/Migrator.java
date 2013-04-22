@@ -72,11 +72,12 @@ public class Migrator implements Tool{
      * @return void
 	 * @throws ConnectionException;IOException
      */
-	public void startRun() throws ConnectionException, IOException, AsyncApiException{
+	public void startRun() throws ConnectionException, IOException, AsyncApiException, InterruptedException{
 		//TODO: implement query object, get the file or stream in csv format
-		//TODO: For now, we just use a temp test.csv file for input 
+		Query qy = new Query();
+		qy.runCSV(getObjectAPIName(),getUserName(),getUserPwd());
+		Thread.sleep(2000L);
 		Insert up = new Insert();
-		up.runCSV(getObjectAPIName(),getUserName(),getUserPwd(),"test.csv");
-		
+		up.runCSV(getObjectAPIName(),getUserName(),getUserPwd(),"result.csv");
 	}
 }

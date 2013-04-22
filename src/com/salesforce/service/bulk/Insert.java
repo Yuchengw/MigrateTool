@@ -1,7 +1,6 @@
-/** This is a simple bulkapi caller for comparision with dataloader
- *  for migration tool.
+/** This is a simple bulkapi for insert operaition for migration tool.
  *
- * @author yucheng.wang@salesforce.com
+ * @author yucheng.wang
  * @since 04/13/2013
  */ 
 
@@ -27,9 +26,9 @@ public class Insert{
 
 	 * @param sobjectType, userName, user password,  target csv file name
 	 * @return void
-     * @throws AsyncApiException, ConnectionException, IOException
+   * @throws AsyncApiException, ConnectionException, IOException
 	 *
-     */	
+   */	
 	public void runCSV(String sobjectType, String userName, String password, String csvFileName)
 				throws AsyncApiException, ConnectionException, IOException{
 		// log in process	
@@ -42,16 +41,16 @@ public class Insert{
 		closeJob(connection, job.getId());
 		awaitCompletion(connection,job,batchInfoList);
 		// check result
-		checkResults(connection, job, batchInfoList);
+		//checkResults(connection, job, batchInfoList);
 	}
 	
 	/**
-	 * Create the BulkConnction used to call Bulk operations   
-     * @param  user name, user password
-	 * @throws ConnectionException, AsyncApiException
-     * @return BulkConnection
-     *
-     */
+	 * Create the BulkConnection used to call web service 
+   * @param  username;userpassword
+   * @return BulkConnection
+	 * @throws ConnectionException;AsyncApiException
+   *
+   */
 	public BulkConnection getBulkConnection(String username, String password) 
 								throws ConnectionException, AsyncApiException{
 		ConnectorConfig partnerConfig = new ConnectorConfig();	
@@ -82,9 +81,9 @@ public class Insert{
 
 	/**
      * Create a new job using Bulk API
-     * @param sobject, bulkconnection,
+     * @param sobject;bulkconnection,
      * @return JobInfo for the new job
-	 * @throws AsyncApiException
+	   * @throws AsyncApiException
      *
      */
 	private JobInfo createJob(String sobjectType, BulkConnection connection)
@@ -222,7 +221,7 @@ public class Insert{
      * A batch may take some time to complete depending on the size of the data set. 
      * @param BulkConnection, Job Information, BatchInfo List
 	 * @return void
-	 * @throws AsyncApiExcpetion
+	 * @throws AsyncApiException
      *
      */
 	private void awaitCompletion(BulkConnection connection, JobInfo job, 

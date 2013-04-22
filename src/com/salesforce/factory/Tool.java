@@ -15,5 +15,5 @@ import com.sforce.ws.ConnectionException;
 
 public interface Tool {
 	public String getToolInfo();
-	public void   startRun() throws ConnectionException, IOException, AsyncApiException;
+	public void   startRun() throws ConnectionException, IOException, AsyncApiException, InterruptedException;
 }
