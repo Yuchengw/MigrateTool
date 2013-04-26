@@ -1,0 +1,8 @@
+<!--This is the main build for Tools, use imported files to actually achieve build process-->
+<project name="MAIN" default="compile" basedir=".">
+	<echo level="info" message="${ant.version}"/>
+	<fail message="You should install ant first to build the project">
+	<condition>
+		<!--TODO: add function to check if the user has ant or not-->
+	</condition>
+</project>

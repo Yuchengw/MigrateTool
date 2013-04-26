@@ -107,15 +107,15 @@ public class Query{
 		//try{
 			File tmpFile= new File("result.csv"); 
 			if(tmpFile.exists()) tmpFile.delete();
-			tmpFile.createNewFile();
-			FileOutputStream tmpOut = new FileOutputStream(tmpFile,true);	
-			//TODO: split the temp file	
-			// construct the query info : use firstname as test
-			String query = "SELECT FirstName__c, LastName__c, Department__c FROM " + sobjectType;
-			String[] res = null;
-			ByteArrayInputStream bout = new ByteArrayInputStream(query.getBytes());	
-			BatchInfo info = connection.createBatchFromStream(jobInfo,bout);
-			batchInfos.add(info);
+			    tmpFile.createNewFile();
+			    FileOutputStream tmpOut = new FileOutputStream(tmpFile,true);	
+			    //TODO: split the temp file	
+			    // construct the query info : use firstname as test
+			    String query = "SELECT FirstName__c, LastName__c, Department__c FROM " + sobjectType;
+			    String[] res = null;
+			    ByteArrayInputStream bout = new ByteArrayInputStream(query.getBytes());	
+			    BatchInfo info = connection.createBatchFromStream(jobInfo,bout);
+			    batchInfos.add(info);
 				info = connection.getBatchInfo(jobInfo.getId(),info.getId());
 				batchInfos.add(info);
 				if(info.getState() == BatchStateEnum.Completed){
@@ -171,9 +171,9 @@ public class Query{
        try{
          Thread.sleep(sleepTime);
        }catch(InterruptedException e){}
-       System.out.println("Awaiting results... " + incomplete.size());
-       sleepTime = 10000L;
-       BatchInfo[] statusList = connection.getBatchInfoList(job.getId()).getBatchInfo();
+         System.out.println("Awaiting results... " + incomplete.size());
+         sleepTime = 10000L;
+         BatchInfo[] statusList = connection.getBatchInfoList(job.getId()).getBatchInfo();
        for(BatchInfo b : statusList){
          if(b.getState()  == BatchStateEnum.Completed || b.getState() ==
                              BatchStateEnum.Failed){
@@ -185,10 +185,10 @@ public class Query{
      }
    }
 			
-		/**
+	/**
      * Get the resutls of the operation and checks for errors
-		 * @param BulkConnection;JobInfo;ListofBatchInfos
-		 * @return void
+     * @param BulkConnection;JobInfo;ListofBatchInfos
+	 * @return void
      * @throws AsyncApiException;IOException
      */
 		private void checkResults(BulkConnection connection, JobInfo job, List<BatchInfo> batchInfoList) throws AsyncApiException, IOException		{
