@@ -45,7 +45,7 @@ public class Query{
 	/**
    * Create the BulkConnection used to call web service
    * @param username;userpassword
-   * @return 
+   * @return ConnectionException;AsyncApiException
    */
 	public BulkConnection getBulkConnection(String username, String password) throws ConnectionException, AsyncApiException{
 		ConnectorConfig partnerConfig = new ConnectorConfig();
