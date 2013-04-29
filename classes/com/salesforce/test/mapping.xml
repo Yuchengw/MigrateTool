@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping>
+	<fromorg>
+		<fusername>ycwmike</fusername>
+		<fuserpassword>test1</fuserpassword>
+		<fobject>Test__C</fobject>
+		<ffield1>First_Name__c</ffield1>
+		<ffield2>Second_name__c</ffield2>
+		<ffield3>Department__c</ffield3>
+	</fromorg>
+	<toorg>
+		<tusername>ycwmike2</tusername>	
+		<tuserpassword>test2</tuserpassword>
+		<tobject>Test_Mapping__C</tobject>
+		<tfield1>First_Name_Mapping__c</tfield1>
+		<tfield2>Second_name_Mapping__c</tfield2>
+		<tfield3>Department_Mapping__c</tfield3>
+	</toorg>
+</mapping>

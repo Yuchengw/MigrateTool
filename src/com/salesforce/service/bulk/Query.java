@@ -28,13 +28,13 @@ public class Query{
    * @return void
 	 * @throws AsyncApiException;ConnectionException;IOException
    */
-	public void runCSV(String sobjectType, String userName, String password) throws AsyncApiException,IOException,ConnectionException, InterruptedException{
+	public void runCSV(String sobjectType, String userName, String password, ArrayList<String> orgfields) throws AsyncApiException,IOException,ConnectionException, InterruptedException{
 		// log in process
 		BulkConnection connection = getBulkConnection(userName, password);
 		// create batch job	
 		JobInfo job = createJob(sobjectType, connection);
 		// get batch job info and save records into a temp csv fileo		
-		List<BatchInfo> batchInfoList = createBatchesToCSVFile(connection, job, sobjectType);
+		List<BatchInfo> batchInfoList = createBatchesToCSVFile(connection, job, sobjectType,orgfields);
 		// close job
 		closeJob(connection, job.getId());
 		awaitCompletion(connection,job,batchInfoList);
@@ -102,18 +102,23 @@ public class Query{
 	 * @throws IOException;AsyncApiException
    *
    */
- 	private List<BatchInfo> createBatchesToCSVFile(BulkConnection connection, JobInfo jobInfo, String sobjectType) throws IOException, AsyncApiException, InterruptedException{
+ 	private List<BatchInfo> createBatchesToCSVFile(BulkConnection connection, JobInfo jobInfo, String sobjectType, ArrayList<String> orgfields) throws IOException, AsyncApiException, InterruptedException{
 		List<BatchInfo> batchInfos = new ArrayList<BatchInfo>();		
 		//try{
 			File tmpFile= new File("result.csv"); 
 			if(tmpFile.exists()) tmpFile.delete();
 			    tmpFile.createNewFile();
 			    FileOutputStream tmpOut = new FileOutputStream(tmpFile,true);	
-			    //TODO: split the temp file	
-			    // construct the query info : use firstname as test
-			    String query = "SELECT FirstName__c, LastName__c, Department__c FROM " + sobjectType;
+			    // construct the query 
+				StringBuilder query = new StringBuilder();
+				query.append("SELECT ");
+				for(int i = 0; i < orgfields.size(); i++){
+					query.append(orgfields.get(i) + " ");	
+				}
+				query.append("FROM ");
+				query.append(sobjectType);
 			    String[] res = null;
-			    ByteArrayInputStream bout = new ByteArrayInputStream(query.getBytes());	
+			    ByteArrayInputStream bout = new ByteArrayInputStream(query.toString().getBytes());	
 			    BatchInfo info = connection.createBatchFromStream(jobInfo,bout);
 			    batchInfos.add(info);
 				info = connection.getBatchInfo(jobInfo.getId(),info.getId());

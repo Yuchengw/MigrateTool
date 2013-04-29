@@ -13,6 +13,5 @@ if [ $# -ne 1 ]
 	exit $ARG_ERROR
 fi
 
-
 	$JAVA_PATH  -cp $LIB_PATH:$CLASS_PATH $1 -jar $B_PATH
 

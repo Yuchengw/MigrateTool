@@ -9,9 +9,10 @@ package com.salesforce.factory;
 
 
 import com.salesforce.factory.Tool;
+import com.salesforce.service.MappingBean;
 
 
 public interface ToolFactory{
 	
-	public Tool useTool(String objAPIName, String username, String usrpwd);
+	public Tool useTool(MappingBean mb);
 }

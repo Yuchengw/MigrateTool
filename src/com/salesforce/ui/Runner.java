@@ -13,6 +13,7 @@ package com.salesforce.ui;
 import java.io.*;
 
 import com.salesforce.factory.*;
+import com.salesforce.service.MappingBean;
 
 import com.sforce.ws.ConnectionException;
 import com.sforce.async.*;
@@ -20,9 +21,9 @@ import com.sforce.async.*;
 
 public class Runner{
 
-	public Runner(ToolFactory fac){
-		// migrate or other object 
-		Tool tool = fac.useTool("Test__c","ycwmike@salesforce.com","Ycw880216GWD6xhmXbW6aSedxaTZ8gtWuZ");
+	public Runner(ToolFactory fac, MappingBean mb){
+	
+		Tool tool = fac.useTool(mb);
 		// start run	
 		try{
 			tool.startRun();

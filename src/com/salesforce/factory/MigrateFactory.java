@@ -8,11 +8,12 @@ package com.salesforce.factory;
 
 
 import com.salesforce.service.Migrator;
+import com.salesforce.service.MappingBean;
 
 public class MigrateFactory implements ToolFactory{
 	
-	public Tool useTool(String objectAPIName, String username, String usrpwd){
-		return new Migrator(objectAPIName, username, usrpwd);
+	public Tool useTool(MappingBean mb){
+		return new Migrator(mb);
 	}
 
 }
