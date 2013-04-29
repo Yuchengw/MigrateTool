@@ -1,0 +1,19 @@
+<project name="build-config" default="" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+	<description>
+		This is a config file for ant build so that it can peek at the properties from config before each build. 
+	</description>
+	<property name="config.home" location="../config"/>
+	<fail message="You could modify the mapping.properties before the build, please add it if you don't have one, read README.txt before you writing your own mapping rule">
+		<condition>
+		  <not>
+			<resourcecount count="1">
+				<fileset dir="${config.home}" includes="mapping.properties"/>
+			</resourcecount>
+		  </not>
+		</condition>
+	</fail>
+	<property file="${build.home}/user.properties"/>
+	<property file="${build.home}/build.properties"/>
+	<property file="${build.home}/default.properties"/>
+	
+</project>

@@ -1,8 +1,8 @@
-<!--This is the main build for Tools, use imported files to actually achieve build process-->
-<project name="MAIN" default="compile" basedir=".">
+<!--This is the main build file for Migrate Tool project, use the imported files to actually store the build process files-->
+<project name="MAIN" default="" basedir=".">
 	<echo level="info" message="${ant.version}"/>
-	<fail message="You should install ant first to build the project">
-	<condition>
-		<!--TODO: add function to check if the user has ant or not-->
-	</condition>
+	<echo level="info" message="${ant.core.lib}"/>
+	<import file="build-props.xml"/>
+	<import file="build-config.xml"/>
+	<import file="build-compile.xml"/>
 </project>
