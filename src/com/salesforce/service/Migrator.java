@@ -13,6 +13,7 @@ import java.util.*;
 
 import com.salesforce.service.bulk.*;
 import com.salesforce.factory.*;
+import com.salesforce.service.MappingBean;
 
 import com.sforce.async.*;
 import com.sforce.soap.partner.PartnerConnection;
@@ -22,50 +23,88 @@ import com.sforce.ws.ConnectionException;
 
 public class Migrator implements Tool{
 
-	private String objectAPIName;
-	private String userName;
-	private String userPwd;
+	private String fromorgobjectAPIName;
+	private String fromorguserName;
+	private String fromorguserPwd;
+	private String toorgobjectAPIName;
+	private String toorguserName;
+	private String toorguserPwd;
+	private ArrayList<String> fromorglist;
+	private ArrayList<String> toorglist;
 
 	// default constructor
-	public Migrator(){}
-
-	public Migrator(String objectAPIName, String userName, String userPwd){
-		this.objectAPIName = objectAPIName;
-		this.userName = userName; 
-		this.userPwd  = userPwd;
+	public Migrator(MappingBean mb){
+		this.fromorgobjectAPIName = mb.getFromOrgObject();
+		this.fromorguserName = mb.getFromOrgUserName();
+		this.fromorguserPwd = mb.getFromOrgPassword();
+		this.toorgobjectAPIName = mb.getToOrgObject();
+		this.toorguserName = mb.getFromOrgUserName();
+		this.toorguserPwd = mb.getToOrgPassword();
+		this.fromorglist = mb.getFromList();
+		this.toorglist = mb.getToList();
 	}
-
+	
 	// implements tool interface
 	public String getToolInfo(){
 		return "Migrating ";
 	} 
 
 	// setter and getters
-
-	public void setObjectAPIName(String Name){
-		this.objectAPIName = Name;
+	public void setFromOrgObjectAPIName(String name){
+		this.fromorgobjectAPIName = name;
 	}
 
-	public void setUserName(String usrname){
-		this.userName = usrname;
+	public void setToOrgObjectAPIName(String name){
+		this.toorgobjectAPIName = name;
 	}
 
-	public void setUserPwd(String usrpwd){
-		this.userPwd = usrpwd;	
+	public void setFromOrgUserName(String usrname){
+		this.fromorguserName = usrname;
+	}
+
+	public void setToOrgObjectUserName(String usrname){
+		this.toorguserName = usrname;
+	}
+
+	public void setFromOrgUserPwd(String usrpwd){
+		this.fromorguserPwd = usrpwd;	
+	}
+
+	public void setToOrgUserPwd(String usrpwd){
+		this.toorguserPwd = usrpwd;	
 	}
 	
-	public String getObjectAPIName(){
-		return this.objectAPIName;
+	public String getFromOrgObjectAPIName(){
+		return this.fromorgobjectAPIName;
 	}
 	
-	public String getUserName(){
-		return this.userName;
+	public String getToOrgObjectAPIName(){
+		return this.toorgobjectAPIName;
 	}
 
-	public String getUserPwd(){
-		return this.userPwd;
+	public String getFromOrgUserName(){
+		return this.fromorguserName;
+	}
+
+	public String getToOrgUserName(){
+		return this.toorguserName;
+	}
+
+	public String getFromOrgUserPwd(){
+		return this.fromorguserPwd;
+	}
+
+	public String getToOrgUserPwd(){
+		return this.toorguserPwd;
 	}
   	
+	public ArrayList<String> getFromOrgFields(){
+		return this.fromorglist;
+	}
+	
+	public ArrayList<String> getToOrgFields(){
+		return this.toorglist;	
+	}
 	/**
      * For Migration, we need query, delete, and insert object to achieve functionality
      * 
@@ -73,11 +112,11 @@ public class Migrator implements Tool{
 	 * @throws ConnectionException;IOException
      */
 	public void startRun() throws ConnectionException, IOException, AsyncApiException, InterruptedException{
-		//TODO: implement query object, get the file or stream in csv format
 		Query qy = new Query();
-		qy.runCSV(getObjectAPIName(),getUserName(),getUserPwd());
+		qy.runCSV(getFromOrgObjectAPIName(),getFromOrgUserName(),getFromOrgUserPwd(),getFromOrgFields());
 		Thread.sleep(2000L);
-		Insert up = new Insert();
-		up.runCSV(getObjectAPIName(),getUserName(),getUserPwd(),"result.csv");
+		//TODO: implement upsert Object
+		//Insert up = new Insert();
+		//up.runCSV(getToOrgObjectAPIName(),getOrgUserName(),getOrgUserPwd(),"result.csv");
 	}
 }

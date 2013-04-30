@@ -28,13 +28,13 @@ public class Query{
    * @return void
 	 * @throws AsyncApiException;ConnectionException;IOException
    */
-	public void runCSV(String sobjectType, String userName, String password) throws AsyncApiException,IOException,ConnectionException, InterruptedException{
+	public void runCSV(String sobjectType, String userName, String password, ArrayList<String> orgfields) throws AsyncApiException,IOException,ConnectionException, InterruptedException{
 		// log in process
 		BulkConnection connection = getBulkConnection(userName, password);
 		// create batch job	
 		JobInfo job = createJob(sobjectType, connection);
 		// get batch job info and save records into a temp csv fileo		
-		List<BatchInfo> batchInfoList = createBatchesToCSVFile(connection, job, sobjectType);
+		List<BatchInfo> batchInfoList = createBatchesToCSVFile(connection, job, sobjectType,orgfields);
 		// close job
 		closeJob(connection, job.getId());
 		awaitCompletion(connection,job,batchInfoList);
@@ -102,43 +102,54 @@ public class Query{
 	 * @throws IOException;AsyncApiException
    *
    */
- 	private List<BatchInfo> createBatchesToCSVFile(BulkConnection connection, JobInfo jobInfo, String sobjectType) throws IOException, AsyncApiException, InterruptedException{
+ 	private List<BatchInfo> createBatchesToCSVFile(BulkConnection connection, JobInfo jobInfo, String sobjectType, ArrayList<String> orgfields) throws IOException, AsyncApiException, InterruptedException{
 		List<BatchInfo> batchInfos = new ArrayList<BatchInfo>();		
 		//try{
-			File tmpFile= new File("result.csv"); 
+			File tmpFile= new File("query.csv"); 
 			if(tmpFile.exists()) tmpFile.delete();
-			tmpFile.createNewFile();
-			FileOutputStream tmpOut = new FileOutputStream(tmpFile,true);	
-			//TODO: split the temp file	
-			// construct the query info : use firstname as test
-			String query = "SELECT FirstName__c, LastName__c, Department__c FROM " + sobjectType;
-			String[] res = null;
-			ByteArrayInputStream bout = new ByteArrayInputStream(query.getBytes());	
-			BatchInfo info = connection.createBatchFromStream(jobInfo,bout);
-			batchInfos.add(info);
-				info = connection.getBatchInfo(jobInfo.getId(),info.getId());
-				batchInfos.add(info);
-				if(info.getState() == BatchStateEnum.Completed){
-					// get stream id
-					res = connection.getQueryResultList(jobInfo.getId(), info.getId()).getResult();	
-				}else if(info.getState() == BatchStateEnum.Failed){
-					System.out.println("---------------Query failed-------");
-				}else{
-					System.out.println("----------------Query waiting-----");
+			    tmpFile.createNewFile();
+			    FileOutputStream tmpOut = new FileOutputStream(tmpFile,true);	
+			    // construct the query 
+				StringBuilder query = new StringBuilder();
+				query.append("SELECT ");
+				for(int i = 0; i < orgfields.size(); i++){
+					if(i == orgfields.size() - 1) query.append(orgfields.get(i) + " ");
+					else query.append(orgfields.get(i) + ", ");	
+				}
+				query.append("FROM ");
+				query.append(sobjectType);
+			    String[] res = null;
+			    ByteArrayInputStream bout = new ByteArrayInputStream(query.toString().getBytes());	
+			    BatchInfo info = connection.createBatchFromStream(jobInfo,bout);
+			    batchInfos.add(info);
+				//TODO: add feature to reminder if there is a timeout
+				for(int i = 0; i < 1000; i++ ){
+					Thread.sleep(i == 0 ? 10 * 1000 : 10 * 1000); //10 sec
+					info = connection.getBatchInfo(jobInfo.getId(),info.getId());
+					batchInfos.add(info);
+					if(info.getState() == BatchStateEnum.Completed){
+						// get stream id
+						res = connection.getQueryResultList(jobInfo.getId(), info.getId()).getResult();	
+						break;
+					}else if(info.getState() == BatchStateEnum.Failed){
+						System.out.println("---------------Query failed-------");
+					}else{
+						System.out.println("----------------Query waiting-----");
+					}
 				}
 			  if(res != null){
-					for(String resultId : res){
-					  InputStream inputStream = connection.getQueryResultStream(jobInfo.getId(),info.getId(),resultId);
-					  StringBuilder sb = new StringBuilder();
-					  BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
-					  String read;
-					while ((read = br.readLine()) != null) {
-						sb.append(read + "\n");
-					}
-						tmpOut.write(sb.toString().getBytes("UTF-8"));
-					br.close();
-					}
-				}
+			  for(String resultId : res){
+			   	 InputStream inputStream = connection.getQueryResultStream(jobInfo.getId(),info.getId(),resultId);
+			   	 StringBuilder sb = new StringBuilder();
+			     BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+			     String read;
+			     while ((read = br.readLine()) != null) {
+			 	     sb.append(read + "\n");
+			     }
+			 	 tmpOut.write(sb.toString().getBytes("UTF-8"));
+			     br.close();
+			  }
+			  }
 			tmpOut.flush();
 			tmpOut.close();
 		return batchInfos;
@@ -171,9 +182,9 @@ public class Query{
        try{
          Thread.sleep(sleepTime);
        }catch(InterruptedException e){}
-       System.out.println("Awaiting results... " + incomplete.size());
-       sleepTime = 10000L;
-       BatchInfo[] statusList = connection.getBatchInfoList(job.getId()).getBatchInfo();
+         System.out.println("Awaiting results... " + incomplete.size());
+         sleepTime = 10000L;
+         BatchInfo[] statusList = connection.getBatchInfoList(job.getId()).getBatchInfo();
        for(BatchInfo b : statusList){
          if(b.getState()  == BatchStateEnum.Completed || b.getState() ==
                              BatchStateEnum.Failed){
@@ -185,10 +196,10 @@ public class Query{
      }
    }
 			
-		/**
+	/**
      * Get the resutls of the operation and checks for errors
-		 * @param BulkConnection;JobInfo;ListofBatchInfos
-		 * @return void
+     * @param BulkConnection;JobInfo;ListofBatchInfos
+	 * @return void
      * @throws AsyncApiException;IOException
      */
 		private void checkResults(BulkConnection connection, JobInfo job, List<BatchInfo> batchInfoList) throws AsyncApiException, IOException		{

@@ -1,0 +1,11 @@
+<project name="props">
+	<description>
+		This is a convenience file for ant build so that it can peek at the properties without having to 
+		load the entire configuraiton and all the associated task defs, etc.
+	</description>
+	<property name="build.home" location="."/>
+	<property file="${build.home}/user.properties"/>
+	<property file="${build.home}/build.properties"/>
+	<property file="${build.home}/default.properties"/>
+	
+</project>
