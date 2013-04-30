@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mapping>
 	<fromorg>
-		<fusername>ycwmike</fusername>
-		<fuserpassword>test1</fuserpassword>
-		<fobject>Test__C</fobject>
-		<ffield1>First_Name__c</ffield1>
-		<ffield2>Second_name__c</ffield2>
+		<fusername>ycwmike@salesforce.com</fusername>
+		<fuserpassword>Ycw880216cltjkP28aSngUmJ05ohXPXFNW</fuserpassword>
+		<fobject>Test__c</fobject>
+		<ffield1>FirstName__c</ffield1>
+		<ffield2>LastName__c</ffield2>
 		<ffield3>Department__c</ffield3>
 	</fromorg>
 	<toorg>

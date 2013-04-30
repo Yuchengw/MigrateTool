@@ -34,10 +34,11 @@ public class TestXML{
 		StringBuilder query = new StringBuilder();
        	query.append("SELECT ");
         for(int i = 0; i < fromorglist.size(); i++){
-            query.append(fromorglist.get(i) + " "); 
+			if(i == fromorglist.size() -1 ) query.append(fromorglist.get(i) + " ");
+            else query.append(fromorglist.get(i) + ", "); 
         }
         query.append("FROM ");
-        query.append("Test");
+        query.append("Test__c");
 		System.out.println(" test query " + query);
 	}
 	
