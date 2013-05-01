@@ -4,20 +4,28 @@
  *
  */
 
-package com.salesforce.ui;
+package com.salesforce.main;
 
 
-import com.salesforce.factroy.ToolFactory;
-import com.slaesforce.factory.MigrateFactory;
+import java.io.*;
+
+import com.salesforce.factory.ToolFactory;
+import com.salesforce.factory.MigrateFactory;
+import com.salesforce.ui.Runner;
 import com.salesforce.ui.MappingParser;
-import com.salesforce.ui.MappingBean;
 import com.salesforce.service.MappingBean;
+
+import com.sforce.async.*;
+import com.sforce.ws.ConnectionException;
+import com.sforce.soap.partner.PartnerConnection;
 
 public class Entry{
 
 	// Default values
-	boolean VERBOSE_MODE=false;
-	boolean INTERACTIVE_MODE=false;
+	private static boolean VERBOSE_MODE=false;
+	private static boolean INTERACTIVE_MODE=false;
+    private static int  RUNNING_MODE=1;
+	private static int  MIGRATE_MODE=1; // default set as MIGRATE_MODE
 	
 	public Entry(){
 	}
@@ -53,20 +61,61 @@ public class Entry{
      *
      */
 	public static void enableCLI(String[] args){
-
+		System.out.println("*********************using user input info************************");
 	}
 	/**
      * The function that deales with no user input configure inforation
      *
      */
-	public static void disableCLI(){
-		
+	public static void disableCLI(String[] args) throws FileNotFoundException{
+		System.out.println("*********************using default config file************************");
+		for(String arg : args){
+			if(arg.toLowerCase().contains("migrate")){
+				RUNNING_MODE=MIGRATE_MODE;
+				break;
+			}
+		}
+		switch(RUNNING_MODE){
+			case 1:
+				enableMigrate();
+				break;
+			default:
+				System.out.println("Please specify which tool you want to use ");
+		}
 	}
-	public static void main(String[] args) throws FileNotFoundException, AsynsException{
+
+	/**
+     * function that implements migreation function
+     *
+     * @throws FileNotFoundException
+     */
+	public static void enableMigrate() throws FileNotFoundException{
+		System.out.println("*************************Starting Migration******************");
+		MappingParser mp = new MappingParser();
+		mp.parse();
+		new Runner(createToolFactory("migrate"),mp.getMappingBean());
+	}
+
+	/**TODO: make more transparent in the future
+     * function that return corresponding tool 
+     *
+     */
+	public static ToolFactory createToolFactory(String service){
+		if(service.equalsIgnoreCase("migrate")){
+			return new MigrateFactory();
+		}
+		return null;
+	}
+
+	public static void main(String[] args) throws FileNotFoundException, AsyncApiException{
 		System.out.println("******************Starting TOOL********************");
-		parserArgument(args);
+		parseArgument(args);
 		// if user has not implement CLI mode, use already configured XML file
-		if(!INTERACTIVE_MODE) disableCLI();
+		if(!INTERACTIVE_MODE) disableCLI(args);
 	}
 
 }
+
+
+
+
