@@ -38,7 +38,7 @@ public class Migrator implements Tool{
 		this.fromorguserName = mb.getFromOrgUserName();
 		this.fromorguserPwd = mb.getFromOrgPassword();
 		this.toorgobjectAPIName = mb.getToOrgObject();
-		this.toorguserName = mb.getFromOrgUserName();
+		this.toorguserName = mb.getToOrgUserName();
 		this.toorguserPwd = mb.getToOrgPassword();
 		this.fromorglist = mb.getFromList();
 		this.toorglist = mb.getToList();
@@ -112,11 +112,12 @@ public class Migrator implements Tool{
 	 * @throws ConnectionException;IOException
      */
 	public void startRun() throws ConnectionException, IOException, AsyncApiException, InterruptedException{
+		//Insert is = new Insert();
+		//is.runCSV(getFromOrgObjectAPIName(),getFromOrgUserName(),getFromOrgUserPwd(),"query.csv");
 		Query qy = new Query();
 		qy.runCSV(getFromOrgObjectAPIName(),getFromOrgUserName(),getFromOrgUserPwd(),getFromOrgFields());
 		Thread.sleep(2000L);
-		//TODO: implement upsert Object
-		//Insert up = new Insert();
-		//up.runCSV(getToOrgObjectAPIName(),getOrgUserName(),getOrgUserPwd(),"result.csv");
+		Upsert up = new Upsert();
+		up.runCSV(getToOrgObjectAPIName(),getToOrgUserName(),getToOrgUserPwd(),"query.csv");
 	}
 }
