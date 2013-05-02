@@ -20,6 +20,7 @@ public class MappingBean{
 	private String toorgpassword;
 	private String fromorgobjectname;
 	private String toorgobjectname;
+	private String toorgexternalid;
 	private ArrayList<String> fromList, toList;
 		
 
@@ -67,6 +68,10 @@ public class MappingBean{
 	public String getToOrgObject(){
 		return toorgobjectname;
 	}
+
+	public String getToOrgExternalId(){
+		return toorgexternalid;
+	}
 	
 	public void setRoot(String s){
 		this.toolname = s;
@@ -94,6 +99,10 @@ public class MappingBean{
 
 	public void setToOrgObject(String o){
 		this.toorgobjectname = o;
+	}
+
+	public void setToOrgExternalId(String id){
+		this.toorgexternalid = id;
 	}
 }
 

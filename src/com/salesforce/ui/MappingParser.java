@@ -112,6 +112,8 @@ public class MappingParser{
 				     	mb.setToOrgUserPassword(an.getNodeValue());
 					 }else if(node.getNodeName() == "tobject"){
 						mb.setToOrgObject(an.getNodeValue());
+					 }else if(node.getNodeName() == "externalId"){
+						mb.setToOrgExternalId(an.getNodeValue());
 				     }else{
 				     	mbtolist.add(an.getNodeValue());
 				     }

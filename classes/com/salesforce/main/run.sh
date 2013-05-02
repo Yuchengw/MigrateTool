@@ -8,10 +8,11 @@ CLASS_PATH=../../../../classes/
 JAVA_PATH=java
 
 
-if [ $# -ne 1 ]
+if [ $# -ne 2 ]
 	then echo "./run.sh <java File Name>"
 	exit $ARG_ERROR
 fi
 
-	$JAVA_PATH  -cp $LIB_PATH:$CLASS_PATH $1 -jar $B_PATH
+	$JAVA_PATH  -cp $LIB_PATH:$CLASS_PATH $1 $2
+	#$JAVA_PATH  -cp $LIB_PATH:$CLASS_PATH $1 
 

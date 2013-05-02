@@ -25,17 +25,18 @@ public class Upsert{
      * @param sobjectType 
      * @param userName
      * @param password
+	 * @param externalid
      * @param csvFileName
      * @return void 
      * @throws AsyncApiException
      * @throws ConnectionException
      * @throws IOException
      */
-	public void runCSV(String sobjectType, String userName, String password, String csvFileName) throws AsyncApiException, ConnectionException, IOException{
+	public void runCSV(String sobjectType, String userName, String password, String externalid, String csvFileName) throws AsyncApiException, ConnectionException, IOException{
 		// log in process	
 		BulkConnection connection = getBulkConnection(userName, password);
 		// create batch job
-		JobInfo job = createJob(sobjectType,connection);
+		JobInfo job = createJob(sobjectType,connection,externalid);
 		// get batch job info and implement upsert
 		List<BatchInfo> batchInfoList = createBatchesFromCSVFile(connection, job, csvFileName);
 		// close job
@@ -77,16 +78,17 @@ public class Upsert{
      * Create a new upsert job using bulk api
      * @param sobject
 	 * @param bulkconnection
+     * @param externalid
 	 * @return jobinfo
 	 * @throws AsyncApiException
      *
      */
-	 private JobInfo createJob(String sobjectType, BulkConnection connection) throws AsyncApiException{
+	 private JobInfo createJob(String sobjectType, BulkConnection connection, String externalid) throws AsyncApiException{
 		JobInfo job = new JobInfo();
 		job.setObject(sobjectType);
 		job.setOperation(OperationEnum.upsert);
 		job.setContentType(ContentType.CSV);
-		job.setExternalIdFieldName("First__c");
+		job.setExternalIdFieldName(externalid);
 		job = connection.createJob(job);
 		System.out.println(job);
 		return job;

@@ -3,15 +3,17 @@
 	<fromorg>
 		<fusername>ycwmike@salesforce.com</fusername>
 		<fuserpassword>Ycw880216cltjkP28aSngUmJ05ohXPXFNW</fuserpassword>
-		<fobject>CCE__c</fobject>
+		<fobject>CCETEST__c</fobject>
 		<ffield1>FirstName__c</ffield1>
 		<ffield2>LastName__c</ffield2>
 		<ffield3>Department__c</ffield3>
 	</fromorg>
 	<toorg>
+		<!--if using migration tool, please notify sobject's external id-->
 		<tusername>ycwmike.test@salseforce.com</tusername>	
 		<tuserpassword>test1234WxCycv2Y9SqWJ1Ihj2282l0z</tuserpassword>
-		<tobject>CCE__c</tobject>
+		<tobject>CCETEST__c</tobject>
+		<externalId>First__c</externalId>
 		<tfield1>First__c</tfield1>
 		<tfield2>Last__c</tfield2>
 		<tfield3>Department__c</tfield3>

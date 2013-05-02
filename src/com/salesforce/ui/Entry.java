@@ -11,6 +11,7 @@ import java.io.*;
 
 import com.salesforce.factory.ToolFactory;
 import com.salesforce.factory.MigrateFactory;
+import com.salesforce.factory.InsertFactory;
 import com.salesforce.ui.Runner;
 import com.salesforce.ui.MappingParser;
 import com.salesforce.service.MappingBean;
@@ -24,8 +25,9 @@ public class Entry{
 	// Default values
 	private static boolean VERBOSE_MODE=false;
 	private static boolean INTERACTIVE_MODE=false;
-    private static int  RUNNING_MODE=1;
-	private static int  MIGRATE_MODE=1; // default set as MIGRATE_MODE
+    private static int  RUNNING_MODE=1; // default set as MIGRATE_MODE
+	private static int  MIGRATE_MODE=1; 
+	private static int  INSERT_MODE =2; 
 	
 	public Entry(){
 	}
@@ -42,6 +44,12 @@ public class Entry{
 			}
 			if(arg.toLowerCase().contains("-i") || arg.toLowerCase().contains("--interactive")){
 				INTERACTIVE_MODE=true; // interactively generate xml file
+			}
+			if(arg.toLowerCase().contains("-c") || arg.toLowerCase().contains("--create")){
+		        RUNNING_MODE = INSERT_MODE;	
+			}
+			if(arg.toLowerCase().contains("-m") || arg.toLowerCase().contains("--migrate")){
+				RUNNING_MODE = MIGRATE_MODE;
 			}
 		}
 		if(VERBOSE_MODE) enableLog();
@@ -69,15 +77,13 @@ public class Entry{
      */
 	public static void disableCLI(String[] args) throws FileNotFoundException{
 		System.out.println("*********************using default config file************************");
-		for(String arg : args){
-			if(arg.toLowerCase().contains("migrate")){
-				RUNNING_MODE=MIGRATE_MODE;
-				break;
-			}
-		}
+
 		switch(RUNNING_MODE){
 			case 1:
 				enableMigrate();
+				break;
+			case 2:
+				enableInsert();
 				break;
 			default:
 				System.out.println("Please specify which tool you want to use ");
@@ -90,10 +96,22 @@ public class Entry{
      * @throws FileNotFoundException
      */
 	public static void enableMigrate() throws FileNotFoundException{
-		System.out.println("*************************Starting Migration******************");
+		System.out.println("*************************Starting Migration**************************");
 		MappingParser mp = new MappingParser();
 		mp.parse();
 		new Runner(createToolFactory("migrate"),mp.getMappingBean());
+	}
+
+	/**
+     * function that implements creation function
+     * 
+     * @throws FileNotFoundException
+     */
+	public static void enableInsert() throws FileNotFoundException{
+		System.out.println("*************************Starting Creationg**************************");
+		MappingParser mp = new MappingParser();
+		mp.parse();
+		new Runner(createToolFactory("insert"),mp.getMappingBean());
 	}
 
 	/**TODO: make more transparent in the future
@@ -103,6 +121,8 @@ public class Entry{
 	public static ToolFactory createToolFactory(String service){
 		if(service.equalsIgnoreCase("migrate")){
 			return new MigrateFactory();
+		}else if(service.equalsIgnoreCase("insert")){
+			return new InsertFactory();	
 		}
 		return null;
 	}

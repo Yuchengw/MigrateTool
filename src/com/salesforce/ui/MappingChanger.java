@@ -24,7 +24,7 @@ public class MappingChanger{
 	private ArrayList<String> toorglist;
 
 	public MappingChanger(){
-		System.out.println("***************Start Chang*******************");
+		System.out.println("***************Start Changing*******************");
 	}
 
 	/**
@@ -63,24 +63,22 @@ public class MappingChanger{
 		File outfile = new File(filename + ".tmp");
 		FileOutputStream outstream = new FileOutputStream(outfile);	
 		StringBuilder fieldsname = new StringBuilder();
-		ArrayList<String> checklist = new ArrayList<String>();
-		// yeah, it could be a buggy place, let's see 
+		//yeah, it could be a buggy place, let's see 
 		for(int i = 0; i < 1; i++){
 			fieldsname.append(rdr.readLine());
 		}
-		String[] line = fieldsname.toString().split(",");
-		for(int i = 0; i < line.length; i++){
-			System.out.println("  " + line[i]);
-			checklist.add(line[i]);	
-		}
+		//String[] line = fieldsname.toString().split(",");
+		//for(int i = 0; i < line.length; i++){
+		//	System.out.print("  " + line[i]);
+		//}
 		String newline = null;
-		if(isEqual(checklist,fromorglist)){
-			newline = createCSV(checklist);
-		}
+		// start mapping
+		newline = createCSV(toorglist);
+		System.out.println(" new line: " + newline);
 		String strline = null;
-		outstream.write(newline.getBytes("UTF-8"));
+		outstream.write((newline+"\n").getBytes("UTF-8"));
 		while((strline = rdr.readLine()) != null){
-			outstream.write(strline.getBytes("UTF-8"));
+			outstream.write((strline+ "\n").getBytes("UTF-8"));
 		}
 		instream.close();
 		outstream.flush();
@@ -91,22 +89,6 @@ public class MappingChanger{
 		}
 	}
 	/**
-     * a small helper function that check if two arraylist are equal
-     * @param list1 
-     * @param list2
-	 * @return boolean 
-     *
-     */
-	public boolean isEqual(ArrayList<String> list1, ArrayList<String> list2){
-		if(list1 == null || list2 == null || list1.size() != list2.size()){
-			return false;
-		}
-		for(int i = 0; i < list1.size(); i++){
-			if(!list1.get(i).equals(list2.get(i))) return false;
-		}		
-		return true;	
-	}
-	/**
      * another helper function that convert a string array to a csv line
      * @param arraylist of string
      * @return csv string
@@ -115,11 +97,13 @@ public class MappingChanger{
 	public String createCSV(ArrayList<String> list){
 	   String newstr = null;
 	   for(int i = 0; i< list.size(); i++){
-			if( ++i == list.size()){
-				newstr = newstr + list.get(i) + "\n";	
+			int index = i;
+			if( ++index == list.size()){
+				newstr = newstr + list.get(i);	
 				break;
 			}
-			newstr = newstr + list.get(i) + ",";	
+			if( newstr == null) newstr = list.get(i) + ",";
+			else newstr = newstr + list.get(i) + ",";	
 	   }
 	   return newstr;
 	}		
