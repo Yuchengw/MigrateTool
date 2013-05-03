@@ -1,7 +1,7 @@
 <!--This is the main build file for Migrate Tool project, use the imported files to actually store the build process files-->
 <project name="MAIN" default="" basedir=".">
-	<echo level="info" message="${ant.version}"/>
-	<echo level="info" message="${ant.core.lib}"/>
+	<echo   level="info" message="${ant.version}"/>
+	<echo   level="info" message="${ant.core.lib}"/>
 	<import file="build-props.xml"/>
 	<import file="build-config.xml"/>
 	<import file="build-compile.xml"/>
