@@ -2,10 +2,15 @@
 	<description>
 		This is a convenience file for ant build so that it can peek at the properties without having to 
 		load the entire configuraiton and all the associated task defs, etc.
+		@author yucheng.wang
 	</description>
 	<property name="build.home" location="."/>
 	<property file="${build.home}/user.properties"/>
 	<property file="${build.home}/build.properties"/>
 	<property file="${build.home}/default.properties"/>
-	
+	<!--Start extract userconfig properties, if not, extract them from default.properties-->
+	<property name="build.idr"   value="{build.home}">
+	<property name="branch"      value="{version}">
+	<property name="myjava.home" value="${JAVA_HOME}">
+	<property name="myant.home"  value="${ANT_HOME}">
 </project>

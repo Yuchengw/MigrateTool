@@ -93,6 +93,7 @@ public class Insert{
 		// chose operation 
 		job.setOperation(OperationEnum.insert);
 		job.setContentType(ContentType.CSV);
+		job.setExternalIdFieldName("Ext_ID_c");
 		job = connection.createJob(job);
 		System.out.println(job);
 		return job;
@@ -283,15 +284,6 @@ public class Insert{
 			}
 		}
 	}
-
-	///**
-    // * The main entry for whole sample file
-    // */
-	//public static void main(String[] args) throws AsyncApiException, 
-	//								ConnectionException, IOException{
-	//	SimpleBulkAPICaller example = new SimpleBulkAPICaller();
-	//	example.runCSV("Test__c","ycwmike@salesforce.com", "Ycw880216GWD6xhmXbW6aSedxaTZ8gtWuZ", "test.csv");	
-	//}
 } 
 
 
