@@ -9,8 +9,8 @@
 	<property file="${build.home}/build.properties"/>
 	<property file="${build.home}/default.properties"/>
 	<!--Start extract userconfig properties, if not, extract them from default.properties-->
-	<property name="build.idr"   value="{build.home}">
-	<property name="branch"      value="{version}">
-	<property name="myjava.home" value="${JAVA_HOME}">
-	<property name="myant.home"  value="${ANT_HOME}">
+	<property name="build.dir"   value="{build.home}"/>
+	<property name="branch"      value="{version}"/>
+	<property name="myjava.home" value="${JAVA_HOME}"/>
+	<property name="myant.home"  value="${ANT_HOME}"/>
 </project>

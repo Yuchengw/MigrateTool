@@ -1,4 +1,3 @@
 <project name="compile" default="" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
 	<description> build file for standard java compilation </description>
-	<echo level="info"> Compling Tools</echo>
 </project>

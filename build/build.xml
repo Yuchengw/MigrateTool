@@ -1,8 +1,11 @@
 <!--This is the main build file for Migrate Tool project, use the imported files to actually store the build process files-->
-<project name="MAIN" default="" basedir=".">
+<project name="Tool" default="" basedir=".">
 	<echo   level="info" message="${ant.version}"/>
 	<echo   level="info" message="${ant.core.lib}"/>
+	<echo   level="info" message="${ant.project.name}"/>
+	<echo   level="info" message="ant.java.version"/>
 	<import file="build-props.xml"/>
 	<import file="build-config.xml"/>
 	<import file="build-compile.xml"/>
+	
 </project>
