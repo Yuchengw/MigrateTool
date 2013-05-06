@@ -3,11 +3,11 @@
 		This is a config file for ant build so that it can peek at the properties from config before each build. 
 	</description>
 	<property name="config.home" location="../config"/>
-	<fail message="You could modify the mapping.properties before the build, please add it if you don't have one, read README.txt before you writing your own mapping rule">
+	<fail message="You should have a build.properties file in config directory">
 		<condition>
 		  <not>
 			<resourcecount count="1">
-				<fileset dir="${config.home}" includes="mapping.properties"/>
+				<fileset dir="${config.home}" includes="build.properties"/>
 			</resourcecount>
 		  </not>
 		</condition>
