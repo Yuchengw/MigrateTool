@@ -6,6 +6,9 @@
 	</description>
 	<property name="build.home"  location="."/>
 	<property name="config.home" location="../config"/>
+	<property name="doc.home"    location="../doc"/>
+	<property name="bin.home"    location="../bin"/>
+	<property name="core.home"   location="../"/>
 	<property file="${config.home}/user.properties"/>
 	<property file="${config.home}/build.properties"/>
 	<property file="${config.home}/default.properties"/>

@@ -7,5 +7,4 @@
 	<!--Initialization for build: path setting-->
 	<!--import file="build-config.xml"-->
 	<import file="build-compile.xml"/>
-	<import file="build-tasks.xml"/>
 </project>
