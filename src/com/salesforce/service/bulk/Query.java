@@ -34,7 +34,24 @@ public class Query{
 		// create batch job	
 		JobInfo job = createJob(sobjectType, connection);
 		// get batch job info and save records into a temp csv fileo		
-		List<BatchInfo> batchInfoList = createBatchesToCSVFile(connection, job, sobjectType,orgfields);
+		List<BatchInfo> batchInfoList = createBatchesToCSVFile(connection, job, sobjectType,null,orgfields);
+		// close job
+		closeJob(connection, job.getId());
+		awaitCompletion(connection,job,batchInfoList);
+		// check result	
+		//checkResults(connection, job, batchInfoList);
+	}
+	
+	/**
+   * overload
+   */	
+	public void runCSV(String sobjectType, String userName, String password, String sqlstatement) throws AsyncApiException,IOException,ConnectionException, InterruptedException{
+		// log in process
+		BulkConnection connection = getBulkConnection(userName, password);
+		// create batch job	
+		JobInfo job = createJob(sobjectType, connection);
+		// get batch job info and save records into a temp csv fileo		
+		List<BatchInfo> batchInfoList = createBatchesToCSVFile(connection, job, sobjectType,sqlstatement,null);
 		// close job
 		closeJob(connection, job.getId());
 		awaitCompletion(connection,job,batchInfoList);
@@ -45,7 +62,7 @@ public class Query{
 	/**
    * Create the BulkConnection used to call web service
    * @param username;userpassword
-   * @return 
+   * @return ConnectionException;AsyncApiException
    */
 	public BulkConnection getBulkConnection(String username, String password) throws ConnectionException, AsyncApiException{
 		ConnectorConfig partnerConfig = new ConnectorConfig();
@@ -102,7 +119,7 @@ public class Query{
 	 * @throws IOException;AsyncApiException
    *
    */
- 	private List<BatchInfo> createBatchesToCSVFile(BulkConnection connection, JobInfo jobInfo, String sobjectType, ArrayList<String> orgfields) throws IOException, AsyncApiException, InterruptedException{
+ 	private List<BatchInfo> createBatchesToCSVFile(BulkConnection connection, JobInfo jobInfo, String sobjectType, String sql, ArrayList<String> orgfields) throws IOException, AsyncApiException, InterruptedException{
 		List<BatchInfo> batchInfos = new ArrayList<BatchInfo>();		
 		//try{
 			File tmpFile= new File("query.csv"); 
@@ -111,13 +128,20 @@ public class Query{
 			    FileOutputStream tmpOut = new FileOutputStream(tmpFile,true);	
 			    // construct the query 
 				StringBuilder query = new StringBuilder();
-				query.append("SELECT ");
-				for(int i = 0; i < orgfields.size(); i++){
-					if(i == orgfields.size() - 1) query.append(orgfields.get(i) + " ");
-					else query.append(orgfields.get(i) + ", ");	
+				
+				if(sql == null && orgfields != null && orgfields.size() != 0){
+				    query.append("SELECT ");
+				    for(int i = 0; i < orgfields.size(); i++){
+				    	if(i == orgfields.size() - 1) query.append(orgfields.get(i) + " ");
+				    	else query.append(orgfields.get(i) + ", ");	
+				    }
+				    query.append("FROM ");
+				    query.append(sobjectType);
+				}else if(sql != null && orgfields == null){
+						query.append(sql);
+				}else{
+						System.out.println("could not construct sql statement....");
 				}
-				query.append("FROM ");
-				query.append(sobjectType);
 			    String[] res = null;
 			    ByteArrayInputStream bout = new ByteArrayInputStream(query.toString().getBytes());	
 			    BatchInfo info = connection.createBatchFromStream(jobInfo,bout);

@@ -1,0 +1,37 @@
+<project name="tasks" default="" basedir=".">
+	<description>paths,properties, and taskdefs for loading our custom tasks</description>
+	<import file="build-paths-anttasks.xml"/>
+	<target name="init">
+		<tstamp>
+		 	<format property="build.time" pattern="MM_dd_yyyy_hh:mm_aa"  unit="minute"/>
+		</tstamp>
+		
+	</target>
+	<target name="doc" depends="init">
+		<mkdir dir="${doc.home}/doc-${build.time}"/>
+	</target>
+	<target name="compile" depends="init">
+		<mkdir  dir="${bin.home}/patch"/>
+		<javac srcdir="${core.home}"  destdir="${bin.home}/patch">
+			<classpath refid="anttasks.runtime.classpath"/>
+		</javac>
+	</target>
+	<target name="jar" depends="compile">
+		<mkdir dir="${bin.home}/patch_jar"/>
+		<jar destfile="${bin.home}/patch_jar/tool.jar"
+			basedir="${bin.home}/patch_jar" includes="*/**">
+		<manifest> 
+			<attribute name="MAIN_CLASS" value="com.salesforce.main.Entry"/>
+		</manifest>	
+		</jar>
+	</target>
+	<target name="all" depends="jar">
+		<echo level="info" message="build classes and create jar file"/>
+	</target>
+	<target name="clean">
+		<echo> *********Clean**********</echo>
+		<delete failonerror="false" includeEmptyDirs="true">
+         <fileset dir="${bin.home}" includes="**/*" />
+         </delete>
+	</target>
+</project>

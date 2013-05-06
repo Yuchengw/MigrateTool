@@ -27,6 +27,7 @@ public class Migrator implements Tool{
 	private String fromorgobjectAPIName;
 	private String fromorguserName;
 	private String fromorguserPwd;
+	private String fromorgsql;
 	private String toorgobjectAPIName;
 	private String toorguserName;
 	private String toorguserPwd;
@@ -40,6 +41,7 @@ public class Migrator implements Tool{
 	public Migrator(MappingBean mb){
 		this.fromorgobjectAPIName = mb.getFromOrgObject();
 		this.fromorguserName = mb.getFromOrgUserName();
+		this.fromorgsql = mb.getFromOrgSQL();
 		this.fromorguserPwd = mb.getFromOrgPassword();
 		this.toorgobjectAPIName = mb.getToOrgObject();
 		this.toorguserName = mb.getToOrgUserName();
@@ -69,6 +71,10 @@ public class Migrator implements Tool{
 		this.fromorguserName = usrname;
 	}
 
+	public void setFromOrgSQL(String sql){
+		this.fromorgsql = sql;
+	}
+
 	public void setToOrgObjectUserName(String usrname){
 		this.toorguserName = usrname;
 	}
@@ -91,6 +97,10 @@ public class Migrator implements Tool{
 
 	public String getFromOrgUserName(){
 		return this.fromorguserName;
+	}
+
+	public String getFromOrgSQL(){
+		return this.fromorgsql;
 	}
 
 	public String getToOrgUserName(){
@@ -125,7 +135,11 @@ public class Migrator implements Tool{
      */
 	public void startRun() throws ConnectionException, IOException, AsyncApiException, InterruptedException{
 		Query qy = new Query();
-		qy.runCSV(getFromOrgObjectAPIName(),getFromOrgUserName(),getFromOrgUserPwd(),getFromOrgFields());
+		if(getFromOrgSQL() != null){
+				qy.runCSV(getFromOrgObjectAPIName(),getFromOrgUserName(),getFromOrgUserPwd(),getFromOrgSQL());
+		}else if(getFromOrgSQL() == null && getFromOrgFields() != null){
+				qy.runCSV(getFromOrgObjectAPIName(),getFromOrgUserName(),getFromOrgUserPwd(),getFromOrgFields());
+		}
 		Thread.sleep(2000L);
 		mc.change("query.csv",this.mb);	
 		Upsert up = new Upsert();

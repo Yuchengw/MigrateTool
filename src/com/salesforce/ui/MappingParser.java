@@ -87,6 +87,8 @@ public class MappingParser{
 						mb.setFromOrgUserPassword(an.getNodeValue());
 					}else if(node.getNodeName() == "fobject"){
 						mb.setFromOrgObject(an.getNodeValue());
+					}else if(node.getNodeName() == "fsql"){
+						mb.setFromOrgSQL(an.getNodeValue());
 					}else{
 		    	   	 	mbfromlist.add(an.getNodeValue());
 					}

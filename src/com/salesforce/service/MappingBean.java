@@ -19,6 +19,7 @@ public class MappingBean{
 	private String fromorgpassword; 		
 	private String toorgpassword;
 	private String fromorgobjectname;
+	private String fromorgsql;
 	private String toorgobjectname;
 	private String toorgexternalid;
 	private ArrayList<String> fromList, toList;
@@ -40,6 +41,10 @@ public class MappingBean{
 	public ArrayList<String> getFromList(){
 		return fromList;
 	}		
+
+	public String getFromOrgSQL(){
+		return fromorgsql;
+	}
 
 	public ArrayList<String> getToList(){
 		return toList;
@@ -80,6 +85,10 @@ public class MappingBean{
 	public void setFromOrgUserName(String s){
 		this.fromorgusername = s;
 	}	
+
+	public void setFromOrgSQL(String sql){
+		this.fromorgsql = sql;
+	}
 
 	public void setFromOrgUserPassword(String p){
 		this.fromorgpassword = p;
