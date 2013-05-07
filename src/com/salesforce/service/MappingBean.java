@@ -10,8 +10,10 @@ package com.salesforce.service;
 
 import java.util.ArrayList;
 
+import com.salesforce.service.Bean;
 
-public class MappingBean{
+
+public class MappingBean implements Bean{
 
 	private String toolname;
 	private String fromorgusername;

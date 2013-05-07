@@ -36,7 +36,7 @@ public class MappingParser{
 	}	
 	
 	/**
-     * Function that check if mapping file exists
+     * Function that check if config file exists
      *
      */
 	public MappingBean parse() throws FileNotFoundException{

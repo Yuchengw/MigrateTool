@@ -12,8 +12,11 @@ import java.io.*;
 import com.salesforce.factory.ToolFactory;
 import com.salesforce.factory.MigrateFactory;
 import com.salesforce.factory.InsertFactory;
+import com.salesforce.factory.QueryFactory;
 import com.salesforce.ui.Runner;
 import com.salesforce.ui.MappingParser;
+import com.salesforce.ui.QueryParser;
+import com.salesforce.service.QueryBean;
 import com.salesforce.service.MappingBean;
 
 import com.sforce.async.*;
@@ -25,9 +28,10 @@ public class Entry{
 	// Default values
 	private static boolean VERBOSE_MODE=false;
 	private static boolean INTERACTIVE_MODE=false;
-    private static int  RUNNING_MODE=1; // default set as MIGRATE_MODE
+    private static int  RUNNING_MODE=0; // default set as MIGRATE_MODE
 	private static int  MIGRATE_MODE=1; 
 	private static int  INSERT_MODE =2; 
+	private static int  QUERY_MODE = 3;
 	
 	public Entry(){
 	}
@@ -50,6 +54,9 @@ public class Entry{
 			}
 			if(arg.toLowerCase().contains("-m") || arg.toLowerCase().contains("--migrate")){
 				RUNNING_MODE = MIGRATE_MODE;
+			}
+			if(arg.toLowerCase().contains("-q") || arg.toLowerCase().contains("--query")){
+				RUNNING_MODE = QUERY_MODE;
 			}
 		}
 		if(VERBOSE_MODE) enableLog();
@@ -76,17 +83,21 @@ public class Entry{
      *
      */
 	public static void disableCLI(String[] args) throws FileNotFoundException{
-		System.out.println("*********************using default config file************************");
-
 		switch(RUNNING_MODE){
+			case 0:
+				System.out.println("Please specifiy your operation");
+				break;
 			case 1:
 				enableMigrate();
 				break;
 			case 2:
 				enableInsert();
 				break;
+			case 3:
+				enableQuery();
+				break;
 			default:
-				System.out.println("Please specify which tool you want to use ");
+				System.out.println("Please specify which mode you want to run. ");
 		}
 	}
 
@@ -101,7 +112,18 @@ public class Entry{
 		mp.parse();
 		new Runner(createToolFactory("migrate"),mp.getMappingBean());
 	}
-
+	
+	/**
+     * function taht implements query function
+     * 
+     * @throws FileNotFoundException
+     */
+	public static void enableQuery() throws FileNotFoundException{
+		System.out.println("*******************************Starting Query**************************");
+		QueryParser qp = new QueryParser();
+		qp.parse();	
+		new Runner(createToolFactory("query"),qp.getQueryBean());
+	}
 	/**
      * function that implements creation function
      * 
@@ -123,12 +145,13 @@ public class Entry{
 			return new MigrateFactory();
 		}else if(service.equalsIgnoreCase("insert")){
 			return new InsertFactory();	
+		}else if(service.equalsIgnoreCase("query")){
+			return new QueryFactory();
 		}
 		return null;
 	}
 
 	public static void main(String[] args) throws FileNotFoundException, AsyncApiException{
-		System.out.println("******************Starting TOOL********************");
 		parseArgument(args);
 		// if user has not implement CLI mode, use already configured XML file
 		if(!INTERACTIVE_MODE) disableCLI(args);

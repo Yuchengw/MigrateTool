@@ -14,6 +14,8 @@ import java.io.*;
 
 import com.salesforce.factory.*;
 import com.salesforce.service.MappingBean;
+import com.salesforce.service.QueryBean;
+import com.salesforce.service.Bean;
 
 import com.sforce.ws.ConnectionException;
 import com.sforce.async.*;
@@ -21,7 +23,7 @@ import com.sforce.async.*;
 
 public class Runner{
 
-	public Runner(ToolFactory fac, MappingBean mb){
+	public Runner(ToolFactory fac, Bean mb){
 	
 		Tool tool = fac.useTool(mb);
 		// start run	
