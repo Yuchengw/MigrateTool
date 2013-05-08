@@ -24,9 +24,13 @@ public class Query{
 
 	/**
    * Main routine that creates a BULK API job nad downloads the fields of custome object into a CSV file. TODO: should also create a XML file version
-   * @param sobjectType;userName;userpassword, 
+   * @param sobjectType
+   * @param userName
+   * @param userpassword, 
    * @return void
-	 * @throws AsyncApiException;ConnectionException;IOException
+   * @throws AsyncApiException
+   * @throws ConnectionException 
+   * @throws IOException
    */
 	public void runCSV(String sobjectType, String userName, String password, ArrayList<String> orgfields) throws AsyncApiException,IOException,ConnectionException, InterruptedException{
 		// log in process

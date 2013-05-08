@@ -9,10 +9,10 @@ package com.salesforce.factory;
 
 
 import com.salesforce.factory.Tool;
-import com.salesforce.service.MappingBean;
+import com.salesforce.service.Bean;
 
 
 public interface ToolFactory{
 	
-	public Tool useTool(MappingBean mb);
+	public Tool useTool(Bean mb);
 }
