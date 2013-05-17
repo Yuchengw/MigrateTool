@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<query>
+	<queryorg>
+		<qusername>ycwmike@salesforce.com</qusername>
+		<quserpassword>Ycw880216tYTvLJiXK38CzOgEOclhRZKzP</quserpassword>
+		<qobject>CCETEST__c</qobject>
+		<qfield1>FirstName__c</qfield1>
+		<qfield2>LastName__c</qfield2>
+		<qfield3>Department__c</qfield3>
+		<where>FirstName__c = 'Yucheng'</where>
+	</queryorg>
+</query>
