@@ -54,7 +54,7 @@
 	<target name="clean">
 		<echo> *********Clean**********</echo>
 		<delete failonerror="true" includeEmptyDirs="true">
-         	<fileset dir="${bin.home}/patch"/> 
+         	 <fileset dir="${bin.home}/patch"/> 
 			<!--<fileset dir="${bin.home}/patch_jar_${build.time}"/>-->
          </delete>
 	</target>
