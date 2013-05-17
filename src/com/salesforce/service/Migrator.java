@@ -27,7 +27,7 @@ public class Migrator implements Tool{
 	private String fromorgobjectAPIName;
 	private String fromorguserName;
 	private String fromorguserPwd;
-	private String fromorgsql;
+	private String fromorgwhere;
 	private String toorgobjectAPIName;
 	private String toorguserName;
 	private String toorguserPwd;
@@ -41,7 +41,7 @@ public class Migrator implements Tool{
 	public Migrator(MappingBean mb){
 		this.fromorgobjectAPIName = mb.getFromOrgObject();
 		this.fromorguserName = mb.getFromOrgUserName();
-		this.fromorgsql = mb.getFromOrgSQL();
+		this.fromorgwhere = mb.getFromOrgWhere();
 		this.fromorguserPwd = mb.getFromOrgPassword();
 		this.toorgobjectAPIName = mb.getToOrgObject();
 		this.toorguserName = mb.getToOrgUserName();
@@ -71,8 +71,8 @@ public class Migrator implements Tool{
 		this.fromorguserName = usrname;
 	}
 
-	public void setFromOrgSQL(String sql){
-		this.fromorgsql = sql;
+	public void setFromOrgWhere(String w){
+		this.fromorgwhere = w;
 	}
 
 	public void setToOrgObjectUserName(String usrname){
@@ -99,8 +99,8 @@ public class Migrator implements Tool{
 		return this.fromorguserName;
 	}
 
-	public String getFromOrgSQL(){
-		return this.fromorgsql;
+	public String getFromOrgWhere(){
+		return this.fromorgwhere;
 	}
 
 	public String getToOrgUserName(){
@@ -135,9 +135,9 @@ public class Migrator implements Tool{
      */
 	public void startRun() throws ConnectionException, IOException, AsyncApiException, InterruptedException{
 		Query qy = new Query();
-		if(getFromOrgSQL() != null){
-				qy.runCSV(getFromOrgObjectAPIName(),getFromOrgUserName(),getFromOrgUserPwd(),getFromOrgSQL());
-		}else if(getFromOrgSQL() == null && getFromOrgFields() != null){
+		if(getFromOrgWhere() != null){
+				qy.runCSV(getFromOrgObjectAPIName(),getFromOrgUserName(),getFromOrgUserPwd(),getFromOrgFields(),getFromOrgWhere());
+		}else if(getFromOrgWhere() == null && getFromOrgFields() != null){
 				qy.runCSV(getFromOrgObjectAPIName(),getFromOrgUserName(),getFromOrgUserPwd(),getFromOrgFields());
 		}
 		Thread.sleep(2000L);

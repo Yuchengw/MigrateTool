@@ -49,13 +49,13 @@ public class Query{
 	/**
    * overload
    */	
-	public void runCSV(String sobjectType, String userName, String password, String sqlstatement) throws AsyncApiException,IOException,ConnectionException, InterruptedException{
+	public void runCSV(String sobjectType, String userName, String password, ArrayList<String> orgfields, String wherestatement) throws AsyncApiException,IOException,ConnectionException, InterruptedException{
 		// log in process
 		BulkConnection connection = getBulkConnection(userName, password);
 		// create batch job	
 		JobInfo job = createJob(sobjectType, connection);
 		// get batch job info and save records into a temp csv fileo		
-		List<BatchInfo> batchInfoList = createBatchesToCSVFile(connection, job, sobjectType,sqlstatement,null);
+		List<BatchInfo> batchInfoList = createBatchesToCSVFile(connection, job, sobjectType,wherestatement,orgfields);
 		// close job
 		closeJob(connection, job.getId());
 		awaitCompletion(connection,job,batchInfoList);
@@ -118,7 +118,9 @@ public class Query{
    * files (1,000 to 10,000 is reasonable) 
    * @param connection 
    * @param jobInfo
-	 * @param sobjectType
+   * @param sobjectType
+   * @param sql  where clause statment
+   * @param orgfields select items
    * @return batchInfos for the job
 	 * @throws IOException;AsyncApiException
    *
@@ -141,8 +143,18 @@ public class Query{
 				    }
 				    query.append("FROM ");
 				    query.append(sobjectType);
-				}else if(sql != null && orgfields == null){
-						query.append(sql);
+				// construct sql select statement with where clause
+				}else if(sql != null && orgfields != null){
+				    query.append("SELECT ");
+				    for(int i = 0; i < orgfields.size(); i++){
+				    	if(i == orgfields.size() - 1) query.append(orgfields.get(i) + " ");
+				    	else query.append(orgfields.get(i) + ", ");	
+				    }
+				    query.append("FROM ");
+				    query.append(sobjectType +" ");
+					query.append("WHERE ");
+					query.append(sql);
+					System.out.println("***************query message: " + query);
 				}else{
 						System.out.println("could not construct sql statement....");
 				}
