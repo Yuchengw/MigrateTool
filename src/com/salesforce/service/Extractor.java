@@ -26,7 +26,7 @@ public class Extractor implements Tool{
 	private String queryorgobjectAPIName;
 	private String queryorguserName;
 	private String queryorguserPwd;
-	private String queryorgsql;
+	private String queryorgwhere;
 	private ArrayList<String> queryorglist;
 	private QueryBean qb;
 
@@ -34,7 +34,7 @@ public class Extractor implements Tool{
 	public Extractor(QueryBean qb){
 		this.queryorgobjectAPIName = qb.getQueryOrgObject();
 		this.queryorguserName = qb.getQueryOrgUserName();
-		this.queryorgsql = qb.getQueryOrgSQL();
+		this.queryorgwhere = qb.getQueryOrgWhere();
 		this.queryorguserPwd = qb.getQueryOrgPassword();
 		this.queryorglist = qb.getQueryList();
 		this.qb = qb;
@@ -55,8 +55,8 @@ public class Extractor implements Tool{
 		this.queryorguserName = usrname;
 	}
 
-	public void setQueryOrgSQL(String sql){
-		this.queryorgsql = sql;
+	public void setQueryOrgWhere(String w){
+		this.queryorgwhere = w;
 	}
 
 	public void setQueryOrgUserPwd(String usrpwd){
@@ -71,8 +71,8 @@ public class Extractor implements Tool{
 		return this.queryorguserName;
 	}
 
-	public String getQueryOrgSQL(){
-		return this.queryorgsql;
+	public String getQueryOrgWhere(){
+		return this.queryorgwhere;
 	}
 
 	public String getQueryOrgUserPwd(){
@@ -91,9 +91,9 @@ public class Extractor implements Tool{
      */
 	public void startRun() throws ConnectionException, IOException, AsyncApiException, InterruptedException{
 		Query qy = new Query();
-		if(getQueryOrgSQL() != null){
-				qy.runCSV(getQueryOrgObjectAPIName(),getQueryOrgUserName(),getQueryOrgUserPwd(),getQueryOrgSQL());
-		}else if(getQueryOrgSQL() == null && getQueryOrgFields() != null){
+		if(getQueryOrgWhere() != null){
+				qy.runCSV(getQueryOrgObjectAPIName(),getQueryOrgUserName(),getQueryOrgUserPwd(),getQueryOrgFields(),getQueryOrgWhere());
+		}else if(getQueryOrgWhere() == null && getQueryOrgFields() != null){
 				qy.runCSV(getQueryOrgObjectAPIName(),getQueryOrgUserName(),getQueryOrgUserPwd(),getQueryOrgFields());
 		}
 	}

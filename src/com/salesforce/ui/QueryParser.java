@@ -88,8 +88,8 @@ public class QueryParser{
 						bean.setQueryOrgPassword(an.getNodeValue());	
 					}else if(node.getNodeName() == "qobject"){
 						bean.setQueryOrgObject(an.getNodeValue());
-					}else if(node.getNodeName() == "qsql"){
-						bean.setQueryOrgSQL(an.getNodeValue());
+					}else if(node.getNodeName() == "where"){
+						bean.setQueryOrgWhere(an.getNodeValue());
 					}else{
 						qblist.add(an.getNodeValue());
 					}

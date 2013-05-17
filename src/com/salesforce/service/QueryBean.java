@@ -17,7 +17,7 @@ public class QueryBean implements Bean{
 	private String queryorgusername;
 	private String queryorgpassword;
 	private String queryorgobjectname;
-	private String queryorgsql;
+	private String queryorgwhere;
 
 	private ArrayList<String> queryList;
 	
@@ -33,8 +33,8 @@ public class QueryBean implements Bean{
 		return queryList;
 	}
 
-	public String getQueryOrgSQL(){
-		return queryorgsql;
+	public String getQueryOrgWhere(){
+		return queryorgwhere;
 	}
 
 	public String getQueryOrgUserName(){
@@ -65,7 +65,7 @@ public class QueryBean implements Bean{
 		this.queryorgobjectname = o;
 	}
 
-	public void setQueryOrgSQL(String q){
-		this.queryorgsql = q;
+	public void setQueryOrgWhere(String w){
+		this.queryorgwhere = w;
 	}
 }

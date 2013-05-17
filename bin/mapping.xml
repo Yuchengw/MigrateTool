@@ -7,6 +7,7 @@
 		<ffield1>FirstName__c</ffield1>
 		<ffield2>LastName__c</ffield2>
 		<ffield3>Department__c</ffield3>
+		<where>FirstName__c = w</where>
 	</fromorg>
 	<toorg>
 		<!--if using migration tool, please notify sobject's external id-->
