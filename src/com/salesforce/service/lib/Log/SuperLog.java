@@ -72,6 +72,28 @@ public class SuperLog{
 		return buf.toString();
 	}
 	
+	/**
+     * Pads <code>val</code> with 0s so that is len chars long.
+     * Only works for len less than or equal to 3.
+     */
+	public static String lpad(int val, int len){
+		if(val < 10){
+			return (len == 3 ? "00" : "0") + Integer.toString(val);
+		}
+		if(len == 3 && val < 100){
+			return "0" + Integer.toString(val);
+		}
+		return Integer.toString(val);
+	}
+	
+	public static String getLogTimeString(String name, long start){
+		StringBuilder buf = new StringBuilder(100);	
+		buf.append(name);
+		buf.append(": ");
+		buf.append(System.currentTimeMills() - start);
+		buf.append("ms");
+		return buf.toString();
+	}
 }
 
 
