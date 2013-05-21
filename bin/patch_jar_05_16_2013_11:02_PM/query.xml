@@ -7,6 +7,6 @@
 		<qfield1>FirstName__c</qfield1>
 		<qfield2>LastName__c</qfield2>
 		<qfield3>Department__c</qfield3>
-		<where>FirstName__c = 'Yucheng'</where>
+		<where>FirstName__c = 'add' OR FirstName__c = 'cce' </where>
 	</queryorg>
 </query>

@@ -45,6 +45,14 @@ public class SuperLogHandler extends Handler{
 	private final ReentrantReadWriteLock.WriteLock writeLock;
 	final ReentrantReadWriteLock.ReadLock readLock;
 
+	public SuperLogHandler(){
+		final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+		writeLock = lock.writeLock();
+		readLock  = lock.readLock();
+		initErrorLogger();
+		setLevel(Level.OFF);
+		initFormatter();
+	}
 
 }
 
