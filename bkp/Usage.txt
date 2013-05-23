@@ -1,0 +1,12 @@
+- For Migarte (specify mapping.xml in advance):
+
+1> After building, Enter java -jar tool.jar -m
+
+- For Query (specify query.xml in advance):
+
+1> After building, Enter java -jar tool.jar -q
+
+- For Insert (create insert.csv in advance):
+
+1> After building, go to bin directory, then go to latest patch directory, 
+2> Enter java -jar tool.jar -c

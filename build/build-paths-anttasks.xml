@@ -2,6 +2,7 @@
 	<description> a property-declaration file for the custom ant tasks</description>
 	<property name="core.lib"  location="${core.home}/lib"/>
 	<property name="bulk.lib.home"  location="${core.lib}/bulkapi"/>
+	<property name="log.dir" value="${log.home}"/>
 	<path id="anttasks.runtime.classpath">
 		<!--could have or delete it-->
 		<pathelement path="${anttasks.runtime.classpath}"/>

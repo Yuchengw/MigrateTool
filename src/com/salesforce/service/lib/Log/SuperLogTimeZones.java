@@ -4,7 +4,7 @@
  * author yucheng.wang 
  */
 
-package com.saleforce.service.lib.log;
+package com.salesforce.service.lib.log;
 
 
 import java.util.TimeZone; 

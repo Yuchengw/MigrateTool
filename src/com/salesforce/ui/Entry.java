@@ -1,6 +1,5 @@
 /**
- * The program that performs as the entry of the program
- * The main class of program
+ * The program that performs as the entry of the program * The main class of program
  *
  */
 
@@ -8,6 +7,8 @@ package com.salesforce.main;
 
 
 import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.salesforce.factory.ToolFactory;
 import com.salesforce.factory.MigrateFactory;
@@ -18,10 +19,13 @@ import com.salesforce.ui.MappingParser;
 import com.salesforce.ui.QueryParser;
 import com.salesforce.service.QueryBean;
 import com.salesforce.service.MappingBean;
+import com.salesforce.service.lib.log.*;
 
 import com.sforce.async.*;
 import com.sforce.ws.ConnectionException;
 import com.sforce.soap.partner.PartnerConnection;
+
+
 
 public class Entry{
 
@@ -41,7 +45,7 @@ public class Entry{
      * @param args input user string
      * @return void
      */
-	public static void parseArgument(String[] args){
+	public static void parseArgument(String[] args) throws IOException{
 		for(String arg : args){
 			if(arg.toLowerCase().contains("-v") || arg.toLowerCase().contains("--verbose")){
 				VERBOSE_MODE=true; // output log info
@@ -64,11 +68,13 @@ public class Entry{
     }
 
 	/** TODO:
-     * The function that direct log output to console 
+     * The function that direct log output to a log File, otherwise, it outputs to console
+     * @param void
+     * @return void
      *
      */
-	public static void enableLog(){
-
+	public static void enableLog() throws IOException{
+		SuperLog.setupFile();
 	}
 
 	/**
@@ -141,6 +147,7 @@ public class Entry{
      *
      */
 	public static ToolFactory createToolFactory(String service){
+
 		if(service.equalsIgnoreCase("migrate")){
 			return new MigrateFactory();
 		}else if(service.equalsIgnoreCase("insert")){
@@ -151,10 +158,11 @@ public class Entry{
 		return null;
 	}
 
-	public static void main(String[] args) throws FileNotFoundException, AsyncApiException{
+	public static void main(String[] args) throws FileNotFoundException, AsyncApiException, IOException{
 		parseArgument(args);
 		// if user has not implement CLI mode, use already configured XML file
 		if(!INTERACTIVE_MODE) disableCLI(args);
+		if(VERBOSE_MODE) enableLog();
 	}
 
 }

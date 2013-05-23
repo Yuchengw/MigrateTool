@@ -9,6 +9,7 @@
 	<property name="config.home" location="../config"/>
 	<property name="doc.home"    location="../doc"/>
 	<property name="bin.home"    location="../bin"/>
+	<property name="log.home"    location="../log"/>
 	<property name="core.home"   location="../"/>
 	<property file="${config.home}/build.properties"/>
 	<!--Start extract user config properties, if not, extract them from default.properties-->

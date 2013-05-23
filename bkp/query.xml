@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Note: don't change query.xml file name, otherwise, it will throw exception-->
 <query>
 	<queryorg>
+		<!-- login info, check it with mapping.xml-->
 		<qusername>ycwmike@salesforce.com</qusername>
 		<quserpassword>Ycw880216tYTvLJiXK38CzOgEOclhRZKzP</quserpassword>
 		<qobject>CCETEST__c</qobject>
+		<!-- specify the fields name you want to query from -->
 		<qfield1>FirstName__c</qfield1>
 		<qfield2>LastName__c</qfield2>
 		<qfield3>Department__c</qfield3>
-		<where>FirstName__c = 'add' OR FirstName__c = 'cce' </where>
+		<!-- add where clause that helps us do conditional query -->
+		<where>FirstName__c = 'Yucheng'</where>
 	</queryorg>
 </query>

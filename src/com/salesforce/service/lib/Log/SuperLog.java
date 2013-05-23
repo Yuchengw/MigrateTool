@@ -12,14 +12,48 @@ package com.salesforce.service.lib.log;
 import java.util.Calendar;
 import java.util.logging.Logger;
 
+//used for setup procedure
+import java.io.IOException;
+import java.util.logging.FileHandler;
+import java.util.logging.Formatter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+import java.util.logging.LogManager;
+
 
 public class SuperLog{
+
+	static private FileHandler     fileTxt;
+	static private SimpleFormatter formatterTxt;
 
 	private SuperLog(){
 		throw new UnsupportedOperationException();
 	}
+
 	//TODO: finish the warper methods 
  		
+	/** 
+     * method that used for logging into txt file in Log directory
+     *
+     * @param void
+	 * @return void
+     */
+	static public void setupFile() throws IOException{
+		// disable parent console log
+		LogManager.getLogManager().reset();
+		// Get the global logger to configure it	
+		Logger logger = Logger.getLogger("");
+		
+		logger.setLevel(Level.INFO);
+		fileTxt = new FileHandler("ToolLogging.txt");
+		
+		// Create txt Formatter
+		formatterTxt =  new SimpleFormatter();
+		fileTxt.setFormatter(formatterTxt);
+		logger.addHandler(fileTxt);
+	}
+
   /**
    * Gets the class name for logger
    */
@@ -36,9 +70,10 @@ public class SuperLog{
 		}catch(RuntimeException e){
 			e.printStackTrace();
 			// no need to rethrow here, test later
-			//throw e;
+			throw e;
 		}catch(Error e){
 			e.printStackTrace();
+			throw e;
 		}
 	}	
 
@@ -90,7 +125,7 @@ public class SuperLog{
 		StringBuilder buf = new StringBuilder(100);	
 		buf.append(name);
 		buf.append(": ");
-		buf.append(System.currentTimeMills() - start);
+		buf.append(System.currentTimeMillis() - start);
 		buf.append("ms");
 		return buf.toString();
 	}

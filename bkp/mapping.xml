@@ -1,19 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- You could modify the value of each node directly, and copy the file in the same 
+     directory with tool.jar -->
 <mapping>
 	<fromorg>
 		<fusername>ycwmike@salesforce.com</fusername>
+		<!-- if you use intranet of Salesforce, don't need to append security token -->
 		<fuserpassword>Ycw880216cltjkP28aSngUmJ05ohXPXFNW</fuserpassword>
+		<!-- from org object api name -->
 		<fobject>CCETEST__c</fobject>
+		<!-- object custome files api name, list the fields you want to updated-->
 		<ffield1>FirstName__c</ffield1>
 		<ffield2>LastName__c</ffield2>
 		<ffield3>Department__c</ffield3>
+		<!-- fill the where clause in where node, Notes: you should add qutoes in where quotes-->	
+		<where>FirstName__c = " "</where>
 	</fromorg>
 	<toorg>
 		<!--if using migration tool, please notify sobject's external id-->
 		<tusername>ycwmike.test@salseforce.com</tusername>	
 		<tuserpassword>test1234WxCycv2Y9SqWJ1Ihj2282l0z</tuserpassword>
 		<tobject>CCETEST__c</tobject>
+		<!-- specify the external id of the desitnation org, check in you object info page-->
 		<externalId>First__c</externalId>
+		<!-- specify the dest org fields you want to update, there's no need to specifiy them thought-->
 		<tfield1>First__c</tfield1>
 		<tfield2>Last__c</tfield2>
 		<tfield3>Department__c</tfield3>
