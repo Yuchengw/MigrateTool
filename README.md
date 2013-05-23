@@ -23,6 +23,7 @@ System requirements:
 
 - Standard JAVA JDK
 - Standard ANT 
+
 =========================================================
 Installation and Build:
 
@@ -35,7 +36,7 @@ Installation and Build:
 
 =========================================================
 Usage
-- please see the sample xml files in bkp directory 
+- please see the sample xml and csv files in bkp directory 
 
 =========================================================
 BUG FIXES
