@@ -40,9 +40,9 @@ public class MappingParser{
      *
      */
 	public MappingBean parse() throws FileNotFoundException{
-		File mappingfile = new File("config.xml");
+		File mappingfile = new File("mapping.xml");
 		if(!mappingfile.exists()){
-			throw new FileNotFoundException("config.xml is not in current directory");	
+			throw new FileNotFoundException("mapping.xml is not in current directory");	
 		}
 		return parseImpl(mappingfile);
 	}

@@ -32,6 +32,7 @@ public class Entry{
 	// Default values
 	private static boolean VERBOSE_MODE=false;
 	private static boolean INTERACTIVE_MODE=false;
+	private static int  HELP_MODE = -1;
     private static int  RUNNING_MODE=0; // default set as MIGRATE_MODE
 	private static int  MIGRATE_MODE=1; 
 	private static int  INSERT_MODE =2; 
@@ -62,6 +63,9 @@ public class Entry{
 			if(arg.toLowerCase().contains("-q") || arg.toLowerCase().contains("--query")){
 				RUNNING_MODE = QUERY_MODE;
 			}
+			if(arg.toLowerCase().contains("-h") || arg.toLowerCase().contains("--help")){
+				RUNNING_MODE = HELP_MODE;
+			}
 		}
 		if(VERBOSE_MODE) enableLog();
 		if(INTERACTIVE_MODE) enableCLI(args);
@@ -84,12 +88,29 @@ public class Entry{
 	public static void enableCLI(String[] args){
 		System.out.println("*********************using user input info************************");
 	}
+
+	/**
+     * The usage of the tool, update when every new release
+     *
+     *
+     */
+	public static void usageHelp(){
+		System.out.println("////////////////////////////Usage///////////////////////");
+		System.out.println("Migration: java -jar tool.jar -m [--migrate]");
+		System.out.println("Query:     java -jar tool.jar -q [--query]");
+		System.out.println("Insert:    java -jar tool.jar -c [--create]");
+		System.out.println("////////////////////////////////////////////////////////");
+	}
+
 	/**
      * The function that deales with no user input configure inforation
      *
      */
 	public static void disableCLI(String[] args) throws FileNotFoundException{
 		switch(RUNNING_MODE){
+			case -1:
+				usageHelp();
+				break;
 			case 0:
 				System.out.println("Please specifiy your operation");
 				break;
