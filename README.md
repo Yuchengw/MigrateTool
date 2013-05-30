@@ -12,7 +12,7 @@ It is implemented by Java, which keeps consistent with Salesforce.com.
 ========================================================
 Features:
 
-- could migrate object's info from one org to another org, 
+- could migrate object's data from one org to another org
 - could insert user-defined log to specific org
 - could query object info from a log
 - logger based application
