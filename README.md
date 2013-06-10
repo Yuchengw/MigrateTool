@@ -35,9 +35,18 @@ Installation and Build:
 
 =========================================================
 Usage
-- java -jar tool.jar -h [--help]
-- please see the sample xml and csv files in bkp directory 
+- 1. clone latest release into your local directory
+  git clone https://github.com/Yuchengw/MigrateTool.git 
+- 2. Go to build directory, then enter following command:
+  ant jar OR ant all to get tool.jar in bin directory
+- 3. Go to bin directory, go to patch_jar_LATESTTIME 
+  then enter following command:
+  java -jar tool.jar -h [--help]
+- 4. Review the sample xml and csv files in bkp directory 
   to see how to configure
+- 5. Copy XML configuration file into patch directory
+- 6. Run the command 
+  e.g., java -jar tool.jar -m -v  
 
 =========================================================
 BUG FIXES
