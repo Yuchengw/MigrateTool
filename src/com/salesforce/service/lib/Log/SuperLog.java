@@ -85,11 +85,9 @@ public class SuperLog{
 			Logger logger = null;
 			// pretty weird, more finest more top
 			if(loglevel.equalsIgnoreCase("INFO")){
-				System.out.println("log level has set as : "  + "INFO");
 				logger = Logger.getLogger(getLoggerName(cl));
 				logger.setLevel(Level.INFO);
 			}else if( loglevel.equalsIgnoreCase("SEVERE")){
-				System.out.println("log level has set as : "  + "SEVERE");
 				logger = Logger.getLogger(getLoggerName(cl));
 				logger.setLevel(Level.SEVERE);
 			}

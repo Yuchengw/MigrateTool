@@ -72,7 +72,7 @@ public class Query{
 		//checkResults(connection, job, batchInfoList);
 	}
 		
-	/**
+  /**
    * Create the BulkConnection used to call web service
    * @param username;userpassword
    * @return ConnectionException;AsyncApiException
@@ -102,10 +102,10 @@ public class Query{
 		return connection;
 	}
 		
-	/**
+  /**
    * Create a new job using Bulk API
-	 * @param sobject;bulkconnection	 
-	 * @return JobInfo for the new job
+   * @param sobject;bulkconnection	 
+   * @return JobInfo for the new job
    * @throws AsyncApiException
    *
    */
@@ -118,13 +118,13 @@ public class Query{
 		job.setConcurrencyMode(ConcurrencyMode.Parallel);
 		job = connection.createJob(job);
 		//System.out.println(job);
-		//LOGGER.info(job);	
+		LOGGER.info(job.toString());	
 		return job;
 	}
 	
-	/**
+  /**
    * Create batches for writing a CSV file
-	 * The file into the appropriate size batch
+   * The file into the appropriate size batch
    * files (1,000 to 10,000 is reasonable) 
    * @param connection 
    * @param jobInfo
@@ -132,7 +132,7 @@ public class Query{
    * @param sql  where clause statment
    * @param orgfields select items
    * @return batchInfos for the job
-	 * @throws IOException;AsyncApiException
+   * @throws IOException;AsyncApiException
    *
    */
  	private List<BatchInfo> createBatchesToCSVFile(BulkConnection connection, JobInfo jobInfo, String sobjectType, String sql, ArrayList<String> orgfields) throws IOException, AsyncApiException, InterruptedException{
@@ -187,7 +187,7 @@ public class Query{
 						//System.out.println("---------------Query failed-------");
 						LOGGER.info("-------------------Query failed--------------");
 					}else{
-						System.out.println("----------------Query waiting-----");
+						//System.out.println("----------------Query waiting-----");
 						LOGGER.info("-------------------Query waiting-----------");	
 					}
 				}
@@ -237,7 +237,7 @@ public class Query{
          Thread.sleep(sleepTime);
        }catch(InterruptedException e){}
          //System.out.println("Awaiting results... " + incomplete.size());
-				 LOGGER.info("Awaiting results..." + incomplete.size());
+		 LOGGER.info("Awaiting results..." + incomplete.size());
          sleepTime = 10000L;
          BatchInfo[] statusList = connection.getBatchInfoList(job.getId()).getBatchInfo();
        for(BatchInfo b : statusList){
@@ -274,9 +274,11 @@ public class Query{
 				String id = resultInfo.get("Id");
 				String error = resultInfo.get("Error");
 				if(success && created){
-					System.out.println("Created row with id" + id);
+					//System.out.println("Created row with id" + id);
+					LOGGER.info("Created row with id " + id);
 				}else if(!success){
-					System.out.println("Failed with error " + error);
+					//System.out.println("Failed with error " + error);
+					LOGGER.info("Failed with error " + error);
 				}
 			}
 		}

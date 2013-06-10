@@ -24,7 +24,6 @@ public class MappingChanger{
 	private ArrayList<String> toorglist;
 
 	public MappingChanger(){
-		System.out.println("***************Start Changing*******************");
 	}
 
 	/**
@@ -41,7 +40,6 @@ public class MappingChanger{
 			throw new FileNotFoundException("****" + filename + "**** is not found");
 		}
 		if(mb == null){
-			System.out.println("MappingBean is Null");
 			return;
 		}
 		fromorglist = (ArrayList<String>)mb.getFromList().clone();
@@ -67,14 +65,10 @@ public class MappingChanger{
 		for(int i = 0; i < 1; i++){
 			fieldsname.append(rdr.readLine());
 		}
-		//String[] line = fieldsname.toString().split(",");
-		//for(int i = 0; i < line.length; i++){
-		//	System.out.print("  " + line[i]);
-		//}
 		String newline = null;
 		// start mapping
 		newline = createCSV(toorglist);
-		System.out.println(" new line: " + newline);
+		//System.out.println(" new line: " + newline);
 		String strline = null;
 		outstream.write((newline+"\n").getBytes("UTF-8"));
 		while((strline = rdr.readLine()) != null){
@@ -85,7 +79,8 @@ public class MappingChanger{
 		outstream.close();
 
 		if(!infile.delete() || !outfile.renameTo(infile)){
-			System.out.println("INFO:++++++++++++++++++++++File operation error");
+			// threw a exception maybe, so far so good :(
+			return;
 		}
 	}
 	/**

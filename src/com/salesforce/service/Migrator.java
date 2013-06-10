@@ -56,6 +56,7 @@ public class Migrator implements Tool{
 		this.loglevel = loglevel;
 		mc = new MappingChanger();
 		this.mb = mb;
+		// main part, I need to log it
 		this.logger = SuperLog.open(Migrator.class,loglevel);
 	}
 	

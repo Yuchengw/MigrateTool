@@ -23,7 +23,7 @@ public class TestMigrate{
 		System.out.println("Test Migration");
 		MappingParser mp = new MappingParser();
 		mp.parse();	
-		new Runner(createToolFactory("migrate"),mp.getMappingBean());
+		new Runner(createToolFactory("migrate"),mp.getMappingBean(), "INFO");
 	}
 	
 	public static ToolFactory createToolFactory(String service){

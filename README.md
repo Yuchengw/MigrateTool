@@ -1,7 +1,6 @@
 ========================================================
 MigrateTool
 copyright (c) 2013, Yucheng Wang,  Vijay Swamidass
-https://github.com/Yuchengw/MigrateTool
 Authors: Yucheng Wang
 ========================================================
 Description:
@@ -36,7 +35,9 @@ Installation and Build:
 
 =========================================================
 Usage
+- java -jar tool.jar -h [--help]
 - please see the sample xml and csv files in bkp directory 
+  to see how to configure
 
 =========================================================
 BUG FIXES

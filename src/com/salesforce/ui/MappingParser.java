@@ -2,8 +2,9 @@
  * This is the upper-level interface program that deals with the xml mapping file
  *
  *
- *
- *
+ * Author yucheng wang
+ * Date 04/30/2013
+ * 
  */
 
 package com.salesforce.ui;
@@ -11,10 +12,12 @@ package com.salesforce.ui;
 
 import com.salesforce.ui.Runner;
 import com.salesforce.service.MappingBean;
+import com.salesforce.service.lib.log.SuperLog;
 
 import java.io.File;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -27,13 +30,18 @@ import org.w3c.dom.NodeList;
 public class MappingParser{
 
 	private MappingBean mb;
+	private Logger LOGGER = null;
 
 	public MappingParser(){
-		//TODO: embeded with log
-		System.out.println("*****************Start Parsing*****************");
 		//for future multi-thread development
 		mb = new MappingBean();
 	}	
+
+	public MappingParser(String loglevel){
+		LOGGER = SuperLog.open(MappingParser.class,loglevel);
+		LOGGER.info("***************************Start Mapping***************************");
+		mb = new MappingBean();
+	}
 	
 	/**
      * Function that check if config file exists
@@ -42,6 +50,7 @@ public class MappingParser{
 	public MappingBean parse() throws FileNotFoundException{
 		File mappingfile = new File("mapping.xml");
 		if(!mappingfile.exists()){
+			LOGGER.severe("mapping.xml is not in product directory.");
 			throw new FileNotFoundException("mapping.xml is not in current directory");	
 		}
 		return parseImpl(mappingfile);
@@ -59,8 +68,6 @@ public class MappingParser{
 		    DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 		    Document doc = dBuilder.parse(mappingfile);
 		    doc.getDocumentElement().normalize();
-		    //TODO: should add logger
-		    System.out.println("root of xml file" + doc.getDocumentElement().getNodeName());	
 		    mb.setRoot(doc.getDocumentElement().getNodeName());
 		    //Extract vlaues from mapping file
 		    setFromOrg(mb,doc);
@@ -101,7 +108,10 @@ public class MappingParser{
 		NodeList nodes = doc.getElementsByTagName("toorg").item(0).getChildNodes();
 		ArrayList<String> mbtolist = mb.getToList();	
 		Node an;
-		if( mbtolist == null) System.out.println("to list is null");
+		if( mbtolist == null) {
+			//System.out.println("to list is null");
+			return;
+		}
 		for(int i = 0; i < nodes.getLength(); i++){
 			Node node = nodes.item(i);
 			if(node.getNodeType() == Node.ELEMENT_NODE){

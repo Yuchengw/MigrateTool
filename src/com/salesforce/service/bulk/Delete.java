@@ -10,6 +10,9 @@ package com.salesforce.service.bulk;
 
 import java.io.*;
 import java.util.*;
+import java.util.logging.Logger;
+
+import com.salesforce.service.lib.log.SuperLog;
 
 import com.sforce.async.*;
 import com.sforce.soap.partner.PartnerConnection;
@@ -18,7 +21,13 @@ import com.sforce.ws.ConnectorConfig;
 
 public class Delete{
 	
+	private static Logger LOGGER = null;
+	
 	public Delete(){
+	}
+
+	public Delete(String loglevel){
+		LOGGER = SuperLog.open(Delete.class, loglevel);
 	}
 
 	/**
@@ -87,7 +96,8 @@ public class Delete{
 		job.setOperation(OperationEnum.delete);
 		//job.setContentType(ContentType.CSV);
 		job = connection.createJob(job);
-		System.out.println(job);
+		//System.out.println(job);
+		LOGGER.info(job.toString());
 		return job;	
 	 }
 	/**

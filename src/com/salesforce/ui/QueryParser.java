@@ -10,10 +10,12 @@ package com.salesforce.ui;
 
 import com.salesforce.ui.Runner;
 import com.salesforce.service.QueryBean;
+import com.salesforce.service.lib.log.SuperLog;
 
 import java.io.File;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -26,9 +28,15 @@ import org.w3c.dom.NodeList;
 public class QueryParser{
 
 	private QueryBean qb;
+	private Logger LOGGER = null;
 	
 	public QueryParser(){
-		System.out.println("********************Start Query Parsing*********************");	
+		qb = new QueryBean();
+	}
+
+	public QueryParser(String loglevel){
+		LOGGER = SuperLog.open(QueryParser.class, loglevel);
+		LOGGER.info("******************************Start Query Parsing***************************");
 		qb = new QueryBean();
 	}
 
@@ -40,7 +48,8 @@ public class QueryParser{
 	public QueryBean parse() throws FileNotFoundException{
 		File queryFile = new File("query.xml");
 		if(!queryFile.exists()){
-			throw new FileNotFoundException("config.xml is not in current directory");
+			LOGGER.severe("query.xml is not in product directory.");
+			throw new FileNotFoundException("");
 		}
 		return parseImpl(queryFile);
 	}
@@ -57,11 +66,13 @@ public class QueryParser{
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			Document doc = dBuilder.parse(queryfile);
 			doc.getDocumentElement().normalize();
-			System.out.println("##############################" + doc.getDocumentElement().getNodeName());
+			//System.out.println("##############################" + doc.getDocumentElement().getNodeName());
+			LOGGER.info("**************************" + doc.getDocumentElement().getNodeName()); 	
 			qb.setRoot(doc.getDocumentElement().getNodeName());
 			setQueryOrg(qb,doc);
 		}catch(Exception ex){
-			ex.printStackTrace();
+			//ex.printStackTrace();
+			LOGGER.info(ex.toString());
 		}
 			return qb;
 	}

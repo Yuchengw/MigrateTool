@@ -9,6 +9,9 @@ package com.salesforce.service.bulk;
 
 import java.io.*;
 import java.util.*;
+import java.util.logging.Logger;
+
+import com.salesforce.service.lib.log.SuperLog;
 
 import com.sforce.async.*;
 import com.sforce.soap.partner.PartnerConnection;
@@ -17,8 +20,14 @@ import com.sforce.ws.ConnectorConfig;
 
 public class Upsert{
 
+	private static Logger LOGGER=null;	
+
 	public Upsert(){
 	}	
+
+	public Upsert(String loglevel){
+		LOGGER = SuperLog.open(Upsert.class, loglevel);
+	}
 
 	/**
      * function that creates a Bulk API job for upsert operation
@@ -69,7 +78,7 @@ public class Upsert{
 		String restEndpoint = soapEndpoint.substring(0, soapEndpoint.indexOf("Soap/")) + "async/" + apiVersion;
 		config.setRestEndpoint(restEndpoint);
 		config.setCompression(true);
-		config.setTraceMessage(true);
+		//config.setTraceMessage(true);
 		BulkConnection connection = new BulkConnection(config);
 		return connection;
 	}
@@ -90,7 +99,8 @@ public class Upsert{
 		job.setContentType(ContentType.CSV);
 		job.setExternalIdFieldName(externalid);
 		job = connection.createJob(job);
-		System.out.println(job);
+		//System.out.println(job);
+		LOGGER.info(job.toString());
 		return job;
 	}
 
@@ -182,7 +192,8 @@ public class Upsert{
 		FileInputStream tmpInputStream = new FileInputStream(tmpFile);
 		try{
 			BatchInfo batchInfo = connection.createBatchFromStream(jobInfo,tmpInputStream);
-			System.out.println(batchInfo);
+			//System.out.println(batchInfo);
+			LOGGER.info(batchInfo.toString());	
 			batchInfos.add(batchInfo);
 		}finally{
 			tmpInputStream.close();
@@ -220,15 +231,18 @@ public class Upsert{
 			try{
 				Thread.sleep(sleepTime);
 			}catch(InterruptedException e){
-				System.out.println(e);	
+				//System.out.println(e);	
+				LOGGER.info(e.toString());
             }
-			System.out.println("Awating results... " + incomplete.size());	
+			//System.out.println("Awating results... " + incomplete.size());	
+			LOGGER.info("Awaiting results... " + incomplete.size());
 			sleepTime = 10000L;
 			BatchInfo[] statusList = connection.getBatchInfoList(job.getId()).getBatchInfo();
 			for(BatchInfo b : statusList){
 				if(b.getState() == BatchStateEnum.Completed || b.getState() == BatchStateEnum.Failed){
 					if(incomplete.remove(b.getId())){
-						System.out.println("Batch Status:\n" + b);
+						//System.out.println("Batch Status:\n" + b);
+						LOGGER.info("Batch Status:\n" + b);	
 					}
 				}
 			}
@@ -262,9 +276,11 @@ public class Upsert{
                 String id = resultInfo.get("Id");
                 String error = resultInfo.get("Error");
                 if(success && created){
-                    System.out.println("Created row with id " + id);
+                    //System.out.println("Created row with id " + id);
+					LOGGER.info("Created row with id "  + id);
                 }else if(!success){
-                    System.out.println("Failed with error " + error);
+                    //System.out.println("Failed with error " + error);
+					LOGGER.info("Failed with error " + error);
                 }
             }
          }

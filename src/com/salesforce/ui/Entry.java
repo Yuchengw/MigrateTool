@@ -33,7 +33,7 @@ public class Entry{
 	private static boolean VERBOSE_MODE=false;
 	private static boolean INTERACTIVE_MODE=false;
 	private static int  HELP_MODE = -1;
-  private static int  RUNNING_MODE=0; // default set as MIGRATE_MODE
+    private static int  RUNNING_MODE=0; // default set as MIGRATE_MODE
 	private static int  MIGRATE_MODE=1; 
 	private static int  INSERT_MODE =2; 
 	private static int  QUERY_MODE = 3;
@@ -101,6 +101,7 @@ public class Entry{
 		System.out.println("Migration: java -jar tool.jar -m [--migrate]");
 		System.out.println("Query:     java -jar tool.jar -q [--query]");
 		System.out.println("Insert:    java -jar tool.jar -c [--create]");
+		System.out.println("Use -v OR --verbose to get more information ");
 		System.out.println("////////////////////////////////////////////////////////");
 	}
 
@@ -108,7 +109,7 @@ public class Entry{
      * The function that deales with no user input configure inforation
      *
      */
-	public static void disableCLI(String[] args) throws FileNotFoundException{
+	public static int disableCLI(String[] args) throws FileNotFoundException{
 		switch(RUNNING_MODE){
 			case -1:
 				usageHelp();
@@ -128,6 +129,7 @@ public class Entry{
 			default:
 				System.out.println("Please specify which mode you want to run. ");
 		}
+		return 1;
 	}
 
 	/**
@@ -136,11 +138,12 @@ public class Entry{
      * @throws FileNotFoundException
      */
 	public static void enableMigrate() throws FileNotFoundException{
-		System.out.println("*************************Starting Migration**************************");
-		MappingParser mp = new MappingParser();
+		superLogger = SuperLog.open(Entry.class, LOGLEVEL);
+		superLogger.info("*************************Starting Migration**************************");
+		MappingParser mp = new MappingParser(LOGLEVEL);
 		mp.parse();
-		new Runner(createToolFactory("migrate"),mp.getMappingBean());
-	}
+		new Runner(createToolFactory("migrate"),mp.getMappingBean(), LOGLEVEL); 
+     }
 	
 	/**
      * function taht implements query function
@@ -151,9 +154,9 @@ public class Entry{
 	
 		superLogger = SuperLog.open(Entry.class, LOGLEVEL); 
 		superLogger.info("**************************Starting Query*************************");
-		QueryParser qp = new QueryParser();
+		QueryParser qp = new QueryParser(LOGLEVEL);
 		qp.parse();	
-		new Runner(createToolFactory("query"),qp.getQueryBean());
+		new Runner(createToolFactory("query"),qp.getQueryBean(), LOGLEVEL);
 	}
 	/**
      * function that implements creation function
@@ -161,10 +164,11 @@ public class Entry{
      * @throws FileNotFoundException
      */
 	public static void enableInsert() throws FileNotFoundException{
-		System.out.println("*************************Starting Creationg**************************");
-		MappingParser mp = new MappingParser();
+		superLogger = SuperLog.open(Entry.class, LOGLEVEL);
+		superLogger.info("*************************Starting Creationg**************************");
+		MappingParser mp = new MappingParser(LOGLEVEL);
 		mp.parse();
-		new Runner(createToolFactory("insert"),mp.getMappingBean());
+		new Runner(createToolFactory("insert"),mp.getMappingBean(), LOGLEVEL);
 	}
 
 	/**TODO: make more transparent in the future

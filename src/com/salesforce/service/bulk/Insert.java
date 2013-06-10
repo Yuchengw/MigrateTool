@@ -11,16 +11,18 @@ import java.io.*;
 import java.util.*;
 import java.util.logging.Logger;
 
+import com.salesforce.service.lib.log.SuperLog;
+
 import com.sforce.async.*;
 import com.sforce.soap.partner.PartnerConnection;
 import com.sforce.ws.ConnectionException;
 import com.sforce.ws.ConnectorConfig;
 
-import com.salesforce.service.lib.SuperLog;
 
 public class Insert{
 		
-	private String Logger LOGGER = null;	
+	private Logger LOGGER = null;	
+
 	public Insert(){
 	}
 
@@ -101,7 +103,8 @@ public class Insert{
 		job.setContentType(ContentType.CSV);
 		job.setExternalIdFieldName("Ext_ID_c");
 		job = connection.createJob(job);
-		System.out.println(job);
+		//System.out.println(job);
+		LOGGER.info(job.toString());
 		return job;
 	}	
 
@@ -202,7 +205,8 @@ public class Insert{
 		FileInputStream tmpInputStream = new FileInputStream(tmpFile);
 		try{
 			BatchInfo batchInfo = connection.createBatchFromStream(jobInfo, tmpInputStream);
-			System.out.println(batchInfo);
+			//System.out.println(batchInfo);
+			LOGGER.info(batchInfo.toString());
 			batchInfos.add(batchInfo);
 		} finally{
 			tmpInputStream.close();
@@ -244,14 +248,15 @@ public class Insert{
 			try{
 				Thread.sleep(sleepTime);
 			}catch(InterruptedException e){}
-			System.out.println("Awaiting results... " + incomplete.size());
+			//System.out.println("Awaiting results... " + incomplete.size());
+			LOGGER.info("Awaiting resutls... " + incomplete.size());
 			sleepTime = 10000L;
 			BatchInfo[] statusList = connection.getBatchInfoList(job.getId()).getBatchInfo();
 			for(BatchInfo b : statusList){
-				if(b.getState()  == BatchStateEnum.Completed || b.getState() == 
-														BatchStateEnum.Failed){
+				if(b.getState()  == BatchStateEnum.Completed || b.getState() == BatchStateEnum.Failed){
 					if(incomplete.remove(b.getId())){
-						System.out.println("Batch STATUS:\n" + b);
+						//System.out.println("Batch STATUS:\n" + b);
+						LOGGER.info("Batch STATUS:\n" + b);
 					}
 				}
 			}
@@ -283,9 +288,11 @@ public class Insert{
 				String id = resultInfo.get("Id");
 				String error = resultInfo.get("Error");
 				if(success && created){
-					System.out.println("Created row with id " + id);
+					//System.out.println("Created row with id " + id);
+					LOGGER.info("Created row with id " + id);
 				}else if(!success){
-					System.out.println("Failed with error " + error);
+					//System.out.println("Failed with error " + error);
+					LOGGER.info("Failed with error " + error);
 				}
 			}
 		}
