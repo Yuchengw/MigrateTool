@@ -13,8 +13,8 @@ import com.salesforce.service.Bean;
 
 public class MigrateFactory implements ToolFactory{
 	
-	public Tool useTool(Bean mb){
-		return new Migrator((MappingBean)mb);
+	public Tool useTool(Bean mb, String loglevel){
+		return new Migrator((MappingBean)mb, loglevel);
 	}
 
 }

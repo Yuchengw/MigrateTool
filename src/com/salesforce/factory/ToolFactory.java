@@ -14,5 +14,5 @@ import com.salesforce.service.Bean;
 
 public interface ToolFactory{
 	
-	public Tool useTool(Bean mb);
+	public Tool useTool(Bean mb, String loglevel);
 }

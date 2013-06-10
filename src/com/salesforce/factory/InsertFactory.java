@@ -14,8 +14,8 @@ import com.salesforce.service.MappingBean;
 
 public class InsertFactory implements ToolFactory{
 	
-	public Tool useTool(Bean mb){
-		return new Insertor((MappingBean)mb);
+	public Tool useTool(Bean mb, String loglevel){
+		return new Insertor((MappingBean)mb, loglevel);
 	}
 
 }

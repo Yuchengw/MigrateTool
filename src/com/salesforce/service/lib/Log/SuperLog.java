@@ -11,6 +11,9 @@ package com.salesforce.service.lib.log;
 
 import java.util.Calendar;
 import java.util.logging.Logger;
+import java.util.logging.LogRecord;
+//import java.util.logging.Filter;
+import java.util.logging.Handler;
 
 //used for setup procedure
 import java.io.IOException;
@@ -34,24 +37,37 @@ public class SuperLog{
 	//TODO: finish the warper methods 
  		
 	/** 
-     * method that used for logging into txt file in Log directory
-     *
-     * @param void
+   * method that used for logging into txt file in Log directory
+   *
+   * @param void
 	 * @return void
-     */
+   */
 	static public void setupFile() throws IOException{
 		// disable parent console log
-		LogManager.getLogManager().reset();
+		//LogManager.getLogManager().reset();
+
 		// Get the global logger to configure it	
-		Logger logger = Logger.getLogger("");
-		
-		logger.setLevel(Level.INFO);
-		fileTxt = new FileHandler("ToolLogging.txt");
-		
+		//Logger logger = Logger.getLogger("");
+		//logger.setLevel(Level.SEVERE);
+		//return logger;	
+		//Logger log = LogManager.getLogManager().getLogger("");
+		//log.setFilter(new Filter(){
+		//	@Override
+		//	public boolean isLoggable(LogRecord record){
+		//		System.out.println("record.getLoggername(): " + record.getLoggerName());
+		//		return "SEVERE".equals(record.getLoggerName());
+		//	}
+    //});
+		//Logger log = LogManager.getLogManager().getLogger("");
+		//for(Handler h : log.getHandlers()){
+		//	System.out.println(":::::::::" + h);
+		//	h.setLevel(Level.INFO);
+		//}
+		//fileTxt = new FileHandler("ToolLogging.txt");
 		// Create txt Formatter
-		formatterTxt =  new SimpleFormatter();
-		fileTxt.setFormatter(formatterTxt);
-		logger.addHandler(fileTxt);
+		//formatterTxt =  new SimpleFormatter();
+		//fileTxt.setFormatter(formatterTxt);
+		//logger.addHandler(fileTxt);
 	}
 
   /**
@@ -64,9 +80,20 @@ public class SuperLog{
 	/**
    * Returns the logger for a class adjusted for SUPER hierachy
    */
-	public static Logger open(Class cl){
+	public static Logger open(Class cl, String loglevel){
 		try{
-			return Logger.getLogger(getLoggerName(cl));
+			Logger logger = null;
+			// pretty weird, more finest more top
+			if(loglevel.equalsIgnoreCase("INFO")){
+				System.out.println("log level has set as : "  + "INFO");
+				logger = Logger.getLogger(getLoggerName(cl));
+				logger.setLevel(Level.INFO);
+			}else if( loglevel.equalsIgnoreCase("SEVERE")){
+				System.out.println("log level has set as : "  + "SEVERE");
+				logger = Logger.getLogger(getLoggerName(cl));
+				logger.setLevel(Level.SEVERE);
+			}
+			return logger;
 		}catch(RuntimeException e){
 			e.printStackTrace();
 			// no need to rethrow here, test later

@@ -14,8 +14,8 @@ import com.salesforce.service.Bean;
 
 public class QueryFactory implements ToolFactory{
 
-	public Tool useTool(Bean qb){
-		return new Extractor((QueryBean)qb);
+	public Tool useTool(Bean qb, String loglevel){
+		return new Extractor((QueryBean)qb, loglevel);
 	}
 
 }

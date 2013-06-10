@@ -10,6 +10,7 @@ package com.salesforce.service;
 
 import java.io.*;
 import java.util.*;
+import java.util.logging.Logger;
 
 import com.salesforce.service.bulk.*;
 import com.salesforce.service.MappingBean;
@@ -20,6 +21,7 @@ import com.sforce.async.*;
 import com.sforce.soap.partner.PartnerConnection;
 import com.sforce.ws.ConnectionException;
 //import com.sforce.ws.ConnectionConfig;
+import com.salesforce.service.lib.log.SuperLog;
 
 
 public class Migrator implements Tool{
@@ -32,13 +34,15 @@ public class Migrator implements Tool{
 	private String toorguserName;
 	private String toorguserPwd;
 	private String toorgexternalId;
+	private String loglevel;
 	private ArrayList<String> fromorglist;
 	private ArrayList<String> toorglist;
 	private MappingChanger mc;
 	private MappingBean mb;
+	private static Logger logger = null;
 
 	// default constructor
-	public Migrator(MappingBean mb){
+	public Migrator(MappingBean mb, String loglevel){
 		this.fromorgobjectAPIName = mb.getFromOrgObject();
 		this.fromorguserName = mb.getFromOrgUserName();
 		this.fromorgwhere = mb.getFromOrgWhere();
@@ -49,8 +53,10 @@ public class Migrator implements Tool{
 		this.fromorglist = mb.getFromList();
 		this.toorglist = mb.getToList();
 		this.toorgexternalId = mb.getToOrgExternalId();
+		this.loglevel = loglevel;
 		mc = new MappingChanger();
 		this.mb = mb;
+		this.logger = SuperLog.open(Migrator.class,loglevel);
 	}
 	
 	// implements tool interface
@@ -134,7 +140,8 @@ public class Migrator implements Tool{
      * @throws IOException
      */
 	public void startRun() throws ConnectionException, IOException, AsyncApiException, InterruptedException{
-		Query qy = new Query();
+		
+		Query qy = new Query(this.loglevel);
 		if(getFromOrgWhere() != null){
 				qy.runCSV(getFromOrgObjectAPIName(),getFromOrgUserName(),getFromOrgUserPwd(),getFromOrgFields(),getFromOrgWhere());
 		}else if(getFromOrgWhere() == null && getFromOrgFields() != null){
@@ -142,10 +149,9 @@ public class Migrator implements Tool{
 		}
 		Thread.sleep(2000L);
 		mc.change("query.csv",this.mb);	
-		Upsert up = new Upsert();
+		Upsert up = new Upsert(this.loglevel);
 		if(getToOrgExternalId() == null){
-			//TODO: add it logger
-			System.out.println("Has not notify to org's external id");
+			logger.info("Has not notify to org's external id");
 		}
 		up.runCSV(getToOrgObjectAPIName(),getToOrgUserName(),getToOrgUserPwd(),getToOrgExternalId(),"query.csv");
 		//Insert is = new Insert();

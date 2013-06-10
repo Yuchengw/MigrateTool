@@ -10,6 +10,9 @@ package com.salesforce.service.bulk;
 
 import java.io.*;
 import java.util.*;
+import java.util.logging.Logger;
+
+import com.salesforce.service.lib.log.SuperLog;
 
 import com.sforce.async.*;
 import com.sforce.soap.partner.PartnerConnection;
@@ -18,8 +21,14 @@ import com.sforce.ws.ConnectorConfig;
 
 
 public class Query{
+	
+	private static Logger LOGGER = null;
 
 	public Query(){
+	}
+	
+	public Query(String loglevel){
+			LOGGER = SuperLog.open(Query.class,loglevel);
 	}
 
 	/**
@@ -108,7 +117,8 @@ public class Query{
 		job.setContentType(ContentType.CSV);
 		job.setConcurrencyMode(ConcurrencyMode.Parallel);
 		job = connection.createJob(job);
-		System.out.println(job);
+		//System.out.println(job);
+		//LOGGER.info(job);	
 		return job;
 	}
 	
@@ -154,9 +164,11 @@ public class Query{
 				    query.append(sobjectType +" ");
 					query.append("WHERE ");
 					query.append(sql);
-					System.out.println("***************query message: " + query);
+					//System.out.println("***************query message: " + query);
+					LOGGER.info("*********************query message: " + query);
 				}else{
-						System.out.println("could not construct sql statement....");
+					//System.out.println("could not construct sql statement....");
+					LOGGER.info("could not construct sql statement....");
 				}
 			    String[] res = null;
 			    ByteArrayInputStream bout = new ByteArrayInputStream(query.toString().getBytes());	
@@ -172,9 +184,11 @@ public class Query{
 						res = connection.getQueryResultList(jobInfo.getId(), info.getId()).getResult();	
 						break;
 					}else if(info.getState() == BatchStateEnum.Failed){
-						System.out.println("---------------Query failed-------");
+						//System.out.println("---------------Query failed-------");
+						LOGGER.info("-------------------Query failed--------------");
 					}else{
 						System.out.println("----------------Query waiting-----");
+						LOGGER.info("-------------------Query waiting-----------");	
 					}
 				}
 			  if(res != null){
@@ -186,7 +200,7 @@ public class Query{
 			     while ((read = br.readLine()) != null) {
 			 	     sb.append(read + "\n");
 			     }
-			 	 tmpOut.write(sb.toString().getBytes("UTF-8"));
+			 	 	 tmpOut.write(sb.toString().getBytes("UTF-8"));
 			     br.close();
 			  }
 			  }
@@ -222,14 +236,16 @@ public class Query{
        try{
          Thread.sleep(sleepTime);
        }catch(InterruptedException e){}
-         System.out.println("Awaiting results... " + incomplete.size());
+         //System.out.println("Awaiting results... " + incomplete.size());
+				 LOGGER.info("Awaiting results..." + incomplete.size());
          sleepTime = 10000L;
          BatchInfo[] statusList = connection.getBatchInfoList(job.getId()).getBatchInfo();
        for(BatchInfo b : statusList){
          if(b.getState()  == BatchStateEnum.Completed || b.getState() ==
                              BatchStateEnum.Failed){
            if(incomplete.remove(b.getId())){
-             System.out.println("Batch STATUS:\n" + b);
+             //System.out.println("Batch STATUS:\n" + b);
+						 LOGGER.info("Batch Status:\n" + b);	
            }
          }
        }

@@ -27,17 +27,19 @@ public class Extractor implements Tool{
 	private String queryorguserName;
 	private String queryorguserPwd;
 	private String queryorgwhere;
+	private String loglevel;
 	private ArrayList<String> queryorglist;
 	private QueryBean qb;
 
 	// default constructor
-	public Extractor(QueryBean qb){
+	public Extractor(QueryBean qb, String loglevel){
 		this.queryorgobjectAPIName = qb.getQueryOrgObject();
 		this.queryorguserName = qb.getQueryOrgUserName();
 		this.queryorgwhere = qb.getQueryOrgWhere();
 		this.queryorguserPwd = qb.getQueryOrgPassword();
 		this.queryorglist = qb.getQueryList();
 		this.qb = qb;
+		this.loglevel = loglevel;
 	}
 	
 	// implements tool interface
@@ -90,7 +92,7 @@ public class Extractor implements Tool{
      * @throws IOException
      */
 	public void startRun() throws ConnectionException, IOException, AsyncApiException, InterruptedException{
-		Query qy = new Query();
+		Query qy = new Query(this.loglevel);
 		if(getQueryOrgWhere() != null){
 				qy.runCSV(getQueryOrgObjectAPIName(),getQueryOrgUserName(),getQueryOrgUserPwd(),getQueryOrgFields(),getQueryOrgWhere());
 		}else if(getQueryOrgWhere() == null && getQueryOrgFields() != null){

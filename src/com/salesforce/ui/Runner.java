@@ -23,9 +23,9 @@ import com.sforce.async.*;
 
 public class Runner{
 
-	public Runner(ToolFactory fac, Bean mb){
+	public Runner(ToolFactory fac, Bean mb, String loglevel){
 	
-		Tool tool = fac.useTool(mb);
+		Tool tool = fac.useTool(mb, loglevel);
 		// start run	
 		try{
 			tool.startRun();

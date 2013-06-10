@@ -9,18 +9,24 @@ package com.salesforce.service.bulk;
 
 import java.io.*;
 import java.util.*;
+import java.util.logging.Logger;
 
 import com.sforce.async.*;
 import com.sforce.soap.partner.PartnerConnection;
 import com.sforce.ws.ConnectionException;
 import com.sforce.ws.ConnectorConfig;
 
+import com.salesforce.service.lib.SuperLog;
 
 public class Insert{
 		
+	private String Logger LOGGER = null;	
 	public Insert(){
 	}
 
+	public Insert(String loglevel){
+		LOGGER = SuperLog.open(Insert.class,loglevel);	
+	}
 	/** 
 	 * function that creates a BULK API job and uploads batches for a CSV file, TODO: should also create a XML file version
 

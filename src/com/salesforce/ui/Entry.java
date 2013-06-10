@@ -7,7 +7,7 @@ package com.salesforce.main;
 
 
 import java.io.*;
-import java.util.logging.Level;
+//import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.salesforce.factory.ToolFactory;
@@ -33,10 +33,12 @@ public class Entry{
 	private static boolean VERBOSE_MODE=false;
 	private static boolean INTERACTIVE_MODE=false;
 	private static int  HELP_MODE = -1;
-    private static int  RUNNING_MODE=0; // default set as MIGRATE_MODE
+  private static int  RUNNING_MODE=0; // default set as MIGRATE_MODE
 	private static int  MIGRATE_MODE=1; 
 	private static int  INSERT_MODE =2; 
 	private static int  QUERY_MODE = 3;
+	private static Logger superLogger;
+	private static String LOGLEVEL = "SEVERE";
 	
 	public Entry(){
 	}
@@ -67,7 +69,6 @@ public class Entry{
 				RUNNING_MODE = HELP_MODE;
 			}
 		}
-		if(VERBOSE_MODE) enableLog();
 		if(INTERACTIVE_MODE) enableCLI(args);
     }
 
@@ -79,6 +80,7 @@ public class Entry{
      */
 	public static void enableLog() throws IOException{
 		SuperLog.setupFile();
+		LOGLEVEL="INFO";
 	}
 
 	/**
@@ -146,7 +148,9 @@ public class Entry{
      * @throws FileNotFoundException
      */
 	public static void enableQuery() throws FileNotFoundException{
-		System.out.println("*******************************Starting Query**************************");
+	
+		superLogger = SuperLog.open(Entry.class, LOGLEVEL); 
+		superLogger.info("**************************Starting Query*************************");
 		QueryParser qp = new QueryParser();
 		qp.parse();	
 		new Runner(createToolFactory("query"),qp.getQueryBean());
@@ -182,8 +186,8 @@ public class Entry{
 	public static void main(String[] args) throws FileNotFoundException, AsyncApiException, IOException{
 		parseArgument(args);
 		// if user has not implement CLI mode, use already configured XML file
-		if(!INTERACTIVE_MODE) disableCLI(args);
 		if(VERBOSE_MODE) enableLog();
+		if(!INTERACTIVE_MODE) disableCLI(args);
 	}
 
 }

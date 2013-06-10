@@ -25,12 +25,14 @@ public class Insertor implements Tool{
 	private String toorgobjectAPIName;
 	private String toorguserName;
 	private String toorguserPwd;
+	private String loglevel; 
 	private MappingBean mb;
 	
-	public Insertor(MappingBean mb){
+	public Insertor(MappingBean mb, String loglevel){
 		this.toorgobjectAPIName = mb.getToOrgObject();
 		this.toorguserName = mb.getToOrgUserName();
 		this.toorguserPwd = mb.getToOrgPassword();
+		this.loglevel = loglevel;
 		this.mb = mb;	
 	}
 	
@@ -70,7 +72,7 @@ public class Insertor implements Tool{
      * @throws IOException
      */		
 	public void startRun() throws ConnectionException, IOException, AsyncApiException, InterruptedException{
-		Insert is = new Insert();
+		Insert is = new Insert(this.loglevel);
 		is.runCSV(getToOrgObjectAPIName(),getToOrgUserName(),getToOrgUserPwd(),"insert.csv");
 	}
 }

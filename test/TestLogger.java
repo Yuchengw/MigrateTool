@@ -9,7 +9,7 @@ import com.salesforce.service.lib.log.SuperLog;
 
 public class TestLogger{
 
-	private static final Logger logger = SuperLog.open(TestLogger.class);
+	private static final Logger logger = SuperLog.open(TestLogger.class,"INFO");
 	public TestLogger(){}
 
 	public static void main(String[] args) throws IOException{
